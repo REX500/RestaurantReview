@@ -13,7 +13,7 @@ const RestaurantRow = ({data, index, navigation}) => {
   const [rowExpanded, setRowExpanded] = useState(false);
 
   const infoPress = () => {
-    navigation.navigate('Info');
+    navigation.navigate('Info', {place: data});
   };
 
   return (
