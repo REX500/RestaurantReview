@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, TextInput } from 'react-native';
 
 // components
 import StarRating from 'components/starRating/StarRating';
+import AddReview from './components/addReview/addReview';
 
 // utils
 import _get from 'lodash/get';
@@ -14,15 +15,14 @@ import style from './style';
 
 const RestaurantInfo = ({ route, navigation }) => {
 	const addReview = () => {
-		navigation.navigate('Modal', {children: getModalContent()});
+		navigation.navigate('Modal', {
+			modalText: 'Add review',
+			children: getModalContent(),
+		});
 	};
 
 	const getModalContent = () => {
-		return (
-			<View>
-				<Text>Dumb text here</Text>
-			</View>
-		);
+		return <AddReview />;
 	};
 
 	const restaurant = _get(route, 'params.place', null);

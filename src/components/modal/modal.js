@@ -4,6 +4,11 @@ import PropTypes from 'prop-types';
 import _get from 'lodash/get';
 
 import { View, Text, TouchableOpacity } from 'react-native';
+import {
+  KeyboardAwareScrollView
+} from 'react-native-keyboard-aware-scroll-view';
+
+
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import style from './style';
@@ -14,17 +19,20 @@ const Modal = ({ navigation, route }) => {
   };
 
 	const view = _get(route, 'params.children', null);
+	const modalText = _get(route, 'params.modalText', null);
 
 	return (
-		<View style={style.main}>
-      <View style={style.iconWrapper}>
-        <TouchableOpacity onPress={onClose}>
-			    <Icon name="close" style={style.icon} size={30}/>
-        </TouchableOpacity>
+    <KeyboardAwareScrollView style={{ flex: 1, backgroundColor: '#FFF' }}>
+      <View style={style.main}>
+        <View style={style.iconWrapper}>
+          <TouchableOpacity onPress={onClose}>
+            <Icon name="close" style={style.icon} size={30}/>
+          </TouchableOpacity>
+        </View>
+        <Text style={style.header}>{modalText || 'No text added'}</Text>
+        {view}
       </View>
-			<Text style={style.header}>Modal</Text>
-			{view}
-		</View>
+    </KeyboardAwareScrollView>
 	);
 };
 
