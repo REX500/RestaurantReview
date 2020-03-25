@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 
 // components
 import StarRating from 'components/starRating/StarRating';
@@ -9,14 +9,28 @@ import StarRating from 'components/starRating/StarRating';
 import _get from 'lodash/get';
 import RestaurantImage from 'images/restaurant.png';
 
+// styles
+import style from './style';
+
 const RestaurantInfo = ({ route, navigation }) => {
+	const addReview = () => {
+		navigation.navigate('Modal', {children: getModalContent()});
+	};
+
+	const getModalContent = () => {
+		return (
+			<View>
+				<Text>Dumb text here</Text>
+			</View>
+		);
+	};
+
 	const restaurant = _get(route, 'params.place', null);
 	const name = _get(restaurant, 'name', null);
 	const address = _get(restaurant, 'address', null);
 
 	return (
 		<View style={style.main}>
-
 			{/* restaurant name */}
 			<View style={style.header}>
 				<Text style={style.headerText}>{name}</Text>
@@ -28,11 +42,8 @@ const RestaurantInfo = ({ route, navigation }) => {
 
 			{/* image and restaurant info (rating, address...) */}
 			<View style={style.content}>
-
 				{/* image wrapper */}
-				<Image
-					style={style.image}
-					source={RestaurantImage} />
+				<Image style={style.image} source={RestaurantImage} />
 
 				{/* details */}
 				<View style={style.detailsWrapper}>
@@ -44,6 +55,9 @@ const RestaurantInfo = ({ route, navigation }) => {
 						<Text style={style.detailsTitle}>Address</Text>
 						<Text style={style.detailsContent}>{address}</Text>
 					</View>
+					<TouchableOpacity style={style.button} onPress={addReview}>
+						<Text style={style.buttonText}>Add review</Text>
+					</TouchableOpacity>
 				</View>
 			</View>
 		</View>
@@ -52,55 +66,7 @@ const RestaurantInfo = ({ route, navigation }) => {
 
 RestaurantInfo.propTypes = {
 	route: PropTypes.object,
-	navigation: PropTypes.object
+	navigation: PropTypes.object,
 };
-
-const style = StyleSheet.create({
-	main: {
-		flex: 1,
-		padding: 16
-	},
-	header: {
-		flexDirection: 'column',
-	},
-	headerText: {
-		fontSize: 20,
-		marginRight: 10,
-		fontWeight: 'bold'
-	},
-	ratingContainer: {
-		marginTop: 4,
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-	ratingText: {
-		marginRight: 4
-	},
-	content: {
-		marginTop: 8,
-		flexDirection: 'row'
-	},
-	image: {
-		height: 150,
-		width: 250,
-		resizeMode: 'contain'
-	},
-	detailsWrapper: {
-		paddingTop: 4,
-		paddingHorizontal: 16,
-		flexDirection: 'column'
-	},
-	detailsContainer: {
-		paddingBottom: 4,
-	},
-	detailsTitle: {
-		fontWeight: '500',
-		color: 'darkgrey'
-	},
-	detailsContent: {
-		fontSize: 15,
-		fontWeight: '600'
-	}
-});
 
 export default RestaurantInfo;
