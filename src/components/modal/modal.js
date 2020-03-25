@@ -30,7 +30,9 @@ const Modal = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
         <Text style={style.header}>{modalText || 'No text added'}</Text>
-        {view}
+
+        {/* child component */}
+        <view.type closeModal={onClose} />
       </View>
     </KeyboardAwareScrollView>
 	);
