@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-import {View, StyleSheet, TextInput, FlatList, Image, Button} from 'react-native';
+import {View, StyleSheet, TextInput, FlatList, Image} from 'react-native';
 
 // components
-import Header from 'components/Header';
-import RestaurantRow from 'components/RestaurantRow';
+import Header from 'components/header/Header';
+import RestaurantRow from 'components/restaurant/restaurantRow/RestaurantRow';
 
 // images
 import PizzaImage from 'images/pizza.png';
+import RestaurantInfo from '../restaurantInfo/RestaurantInfo';
 
 const restaurants = [
   {rating: 4.7, name: 'React Cafe', address: '123 Anywhere St'},
@@ -64,6 +66,10 @@ const RestaurantList = ({navigation}) => {
       />
     </View>
   );
+};
+
+RestaurantInfo.propTypes = {
+  navigation: PropTypes.object
 };
 
 const styles = StyleSheet.create({

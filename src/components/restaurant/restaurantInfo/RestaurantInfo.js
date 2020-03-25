@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet, Text, Image } from 'react-native';
 
 // components
-import StarRating from 'components/StarRating';
+import StarRating from 'components/starRating/StarRating';
 
 // utils
 import _get from 'lodash/get';

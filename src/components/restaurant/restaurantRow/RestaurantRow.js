@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 // components
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import StarRating from 'components/StarRating';
+import StarRating from 'components/starRating/StarRating';
 
 const RestaurantRow = ({ data, index, navigation }) => {
 	const infoPress = () => {

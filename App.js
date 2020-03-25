@@ -1,57 +1,70 @@
-"use strict";
-
-import React, { Component } from "react";
+import React from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 // components
-import RestaurantList from "components/RestaurantList";
-import RestaurantInfo from "components/RestaurantInfo";
+import RestaurantList from 'components/restaurant/restaurantList/RestaurantList';
+import RestaurantInfo from 'components/restaurant/restaurantInfo/RestaurantInfo';
+import About from 'components/about/about';
 
-import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-
-import { Platform } from "react-native";
-
-const instructions = Platform.select({
-  ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
-  android:
-    "Double tap R on your keyboard to reload,\n" +
-    "Shake or press menu button for dev menu"
-});
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const MyTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    background: 'rgb(255, 255, 255)',
-  },
+	...DefaultTheme,
+	colors: {
+		...DefaultTheme.colors,
+		background: 'rgb(255, 255, 255)',
+	},
+};
+
+const homeStackScreen = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#0066CC',
+        },
+        headerTintColor: '#ffffff',
+      }}>
+      <Stack.Screen
+        name="Home"
+        options={{ headerTransparent: true, title: '' }}>
+        {(props) => <RestaurantList {...props} />}
+      </Stack.Screen>
+      <Stack.Screen name="Info">
+        {(props) => <RestaurantInfo {...props} />}
+      </Stack.Screen>
+    </Stack.Navigator>
+  );
 };
 
 const App = () => {
-  return (
-    <NavigationContainer theme={MyTheme}>
-      <Stack.Navigator
-        initialRouteName="Home"
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: "#0066CC"
+	return (
+		<NavigationContainer theme={MyTheme}>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ color }) => {
+            const iconName = route.name === 'List' ? 'list' : 'info-circle';
+
+            return <Icon name={iconName} color={color} size={22} />;
           },
-          headerTintColor: '#ffffff'
+        })}
+        tabBarOptions={{
+          activeBackgroundColor: '#E6F0FA',
+          activeTintColor: '#0066CC',
+          inactiveTintColor: 'gray',
         }}
       >
-        <Stack.Screen
-          name="Home"
-          options={{ headerTransparent: true, title: '' }}
-        >
-          {props => <RestaurantList {...props} />}
-        </Stack.Screen>
-        <Stack.Screen name="Info">
-          {props => <RestaurantInfo {...props} />}
-        </Stack.Screen>
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+        <Tab.Screen name="List" component={homeStackScreen} />
+        <Tab.Screen name="About" component={About} />
+      </Tab.Navigator>
+		</NavigationContainer>
+	);
 };
 
 export default App;

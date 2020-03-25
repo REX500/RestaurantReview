@@ -9,6 +9,7 @@
     "eslint-plugin-react"
   ],
   "rules": {
+    "react/jsx-props-no-spreading": "off",
     "react/require-default-props": "off",
     "react/no-array-index-key": "off",
     "import/no-unresolved": "off",
