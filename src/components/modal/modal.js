@@ -1,46 +1,66 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import MyContext from 'context';
 import PropTypes from 'prop-types';
 
+// react native stuff
+import { View, Text, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+// scrolls up if on screen keyboard would cover
+// the input field for ex.
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
+// components
+import AddReviewModal from './components/addReviewModal/addReviewModal';
+
+// utils
 import _get from 'lodash/get';
 
-import { View, Text, TouchableOpacity } from 'react-native';
-import {
-  KeyboardAwareScrollView
-} from 'react-native-keyboard-aware-scroll-view';
+// enum for modal types
+import ModalType from './modalTypes.enum';
 
-
-import Icon from 'react-native-vector-icons/MaterialIcons';
-
+// styles
 import style from './style';
 
-const Modal = ({ navigation, route }) => {
-  const onClose = () => {
-    navigation.goBack();
-  };
+const Modal = ({ navigation }) => {
+	const onClose = () => {
+		navigation.goBack();
+	};
 
-	const view = _get(route, 'params.children', null);
-	const modalText = _get(route, 'params.modalText', null);
+	// child component based on modal type
+	const getChildComponent = () => {
+		switch (modalType) {
+			case ModalType.ADD_REVIEW:
+				return <AddReviewModal onClose={onClose} />;
+			default:
+				return (
+					<Text style={style.noComponentFound}>
+						No component found, did you choose the correct modal type?
+					</Text>
+				);
+		}
+	};
+
+	const context = useContext(MyContext);
+	const modalType = _get(context, 'modal.modalType', null);
+	const modalText = _get(context, 'modal.modalTitle', null);
 
 	return (
-    <KeyboardAwareScrollView style={{ flex: 1, backgroundColor: '#FFF' }}>
-      <View style={style.main}>
-        <View style={style.iconWrapper}>
-          <TouchableOpacity onPress={onClose}>
-            <Icon name="close" style={style.icon} size={30}/>
-          </TouchableOpacity>
-        </View>
-        <Text style={style.header}>{modalText || 'No text added'}</Text>
-
-        {/* child component */}
-        <view.type closeModal={onClose} />
-      </View>
-    </KeyboardAwareScrollView>
+		<KeyboardAwareScrollView style={{ flex: 1, backgroundColor: '#FFF' }}>
+			<View style={style.main}>
+				<View style={style.iconWrapper}>
+					<TouchableOpacity onPress={onClose}>
+						<Icon name="close" style={style.icon} size={30} />
+					</TouchableOpacity>
+				</View>
+				<Text style={style.header}>{modalText || 'No text added'}</Text>
+				{getChildComponent()}
+			</View>
+		</KeyboardAwareScrollView>
 	);
 };
 
 Modal.propTypes = {
-	navigation: PropTypes.object,
-	route: PropTypes.object,
+	navigation: PropTypes.object
 };
 
 export default Modal;

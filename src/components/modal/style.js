@@ -17,5 +17,12 @@ export default StyleSheet.create({
   },
   header: {
     fontSize: 24
+  },
+  noComponentFound: {
+    padding: 8,
+    textAlign: 'center',
+    fontSize: 20,
+    color: 'red',
+    marginTop: 240
   }
 });

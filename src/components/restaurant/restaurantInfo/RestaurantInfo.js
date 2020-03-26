@@ -1,29 +1,34 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
+import MyContext from 'context';
+
 import PropTypes from 'prop-types';
-import { View, Text, Image, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 
 // components
 import StarRating from 'components/starRating/StarRating';
-import AddReview from './components/addReview/addReview';
 
 // utils
 import _get from 'lodash/get';
 import RestaurantImage from 'images/restaurant.png';
 
+// modal type
+import ModalTypes from 'components/modal/modalTypes.enum';
+
 // styles
 import style from './style';
 
-const RestaurantInfo = ({ route, navigation }) => {
+const RestaurantInfo = ({navigation, route}) => {
 	const addReview = () => {
-		navigation.navigate('Modal', {
-			modalText: 'Add review',
-			children: getModalContent(),
-		});
+		// set modal title and type in context
+		setModalTitle('Add a review');
+		setModalType(ModalTypes.ADD_REVIEW);
+		
+		navigation.navigate('Modal');
 	};
 
-	const getModalContent = () => {
-		return <AddReview />;
-	};
+	const context = useContext(MyContext);
+	const setModalTitle = _get(context, 'modal.setModalTitle', () => {});
+	const setModalType = _get(context, 'modal.setModalType', () => {});
 
 	const restaurant = _get(route, 'params.place', null);
 	const name = _get(restaurant, 'name', null);
@@ -62,7 +67,7 @@ const RestaurantInfo = ({ route, navigation }) => {
 			</View>
 		</View>
 	);
-};
+}
 
 RestaurantInfo.propTypes = {
 	route: PropTypes.object,
