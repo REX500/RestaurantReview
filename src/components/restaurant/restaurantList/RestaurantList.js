@@ -10,7 +10,6 @@ import RestaurantRow from 'components/restaurant/restaurantRow/RestaurantRow';
 
 // images
 import PizzaImage from 'images/pizza.png';
-import RestaurantInfo from '../restaurantInfo/RestaurantInfo';
 
 class RestaurantList extends Component {
 	constructor(props) {

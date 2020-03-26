@@ -11,6 +11,7 @@ import RestaurantList from 'components/restaurant/restaurantList/RestaurantList'
 import RestaurantInfo from 'components/restaurant/restaurantInfo/RestaurantInfo';
 import About from 'components/about/about';
 import Modal from 'components/modal/modal';
+import ContextWrapper from 'context/contextWrapper';
 
 // context
 import MyContext from 'context';
@@ -87,22 +88,24 @@ const App = () => {
 	};
 
 	return (
-		<MyContext.Provider value={value}>
-			<NavigationContainer theme={MyTheme} headerMode="none">
-				<Stack.Navigator mode="modal" screenOptions={{ headerTransparent: true }}>
-					<Stack.Screen
-						name="Tabs"
-						component={tabNavigator}
-						options={{ headerTransparent: true, title: '' }}
-					/>
-					<Stack.Screen
-						name="Modal"
-						options={{ headerTransparent: true, title: '', headerLeft: null }}>
-						{(props) => <Modal {...props} />}
-					</Stack.Screen>
-				</Stack.Navigator>
-			</NavigationContainer>
-		</MyContext.Provider>
+		<ContextWrapper>
+			{/* <MyContext.Provider value={value}> */}
+				<NavigationContainer theme={MyTheme} headerMode="none">
+					<Stack.Navigator mode="modal" screenOptions={{ headerTransparent: true }}>
+						<Stack.Screen
+							name="Tabs"
+							component={tabNavigator}
+							options={{ headerTransparent: true, title: '' }}
+						/>
+						<Stack.Screen
+							name="Modal"
+							options={{ headerTransparent: true, title: '', headerLeft: null }}>
+							{(props) => <Modal {...props} />}
+						</Stack.Screen>
+					</Stack.Navigator>
+				</NavigationContainer>
+			{/* </MyContext.Provider> */}
+		</ContextWrapper>
 	);
 };
 
