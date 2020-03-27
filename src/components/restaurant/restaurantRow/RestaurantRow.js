@@ -30,7 +30,7 @@ const RestaurantRow = ({ data, index, navigation }) => {
 					...(index % 2 !== 0 ? [{ backgroundColor: '#FDE8E9' }] : []),
 				]}>
 				<View style={style.rating}>
-					<StarRating entry={data} />
+					<StarRating rating={data.rating} />
 				</View>
 
 				<View style={style.nameAddress}>

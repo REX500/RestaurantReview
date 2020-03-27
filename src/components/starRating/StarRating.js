@@ -7,9 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import style from './style';
 
-const StarRating = ({ entry }) => {
-	const { rating } = entry;
-
+const StarRating = ({ rating }) => {
 	// round to 0.5
 	const roundedEntry = Math.round(rating * 2) / 2;
 	const array = [...Array(Math.ceil(rating))];
@@ -29,7 +27,7 @@ const StarRating = ({ entry }) => {
 };
 
 StarRating.propTypes = {
-	entry: PropTypes.object.isRequired
+	rating: PropTypes.number.isRequired
 };
 
 export default StarRating;

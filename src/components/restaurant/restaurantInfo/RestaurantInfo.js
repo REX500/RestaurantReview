@@ -6,6 +6,7 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 
 // components
 import StarRating from 'components/starRating/StarRating';
+import RestaurantReviews from './components/restaurantReviews/restaurantReviews';
 
 // utils
 import _get from 'lodash/get';
@@ -33,6 +34,7 @@ const RestaurantInfo = ({navigation}) => {
 
 	const name = _get(resturantInfo, 'name', null);
 	const address = _get(resturantInfo, 'address', null);
+	const rating = _get(resturantInfo, 'rating', 0);
 
 	return (
 		<View style={style.main}>
@@ -41,7 +43,7 @@ const RestaurantInfo = ({navigation}) => {
 				<Text style={style.headerText}>{name}</Text>
 				<View style={style.ratingContainer}>
 					<Text style={style.ratingText}>Rating:</Text>
-					<StarRating entry={resturantInfo} />
+					<StarRating rating={rating} />
 				</View>
 			</View>
 
@@ -65,12 +67,16 @@ const RestaurantInfo = ({navigation}) => {
 					</TouchableOpacity>
 				</View>
 			</View>
+			<View>
+				<RestaurantReviews
+					restaurant={resturantInfo}
+				/>
+			</View>
 		</View>
 	);
 };
 
 RestaurantInfo.propTypes = {
-	route: PropTypes.object,
 	navigation: PropTypes.object,
 };
 
