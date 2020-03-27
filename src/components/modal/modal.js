@@ -44,8 +44,6 @@ const Modal = ({ navigation }) => {
 	const modalType = _get(context, 'modal.modalType', null);
 	const modalText = _get(context, 'modal.modalTitle', null);
 
-	console.log(context, modalText, modalType);	
-
 	return (
 		<KeyboardAwareScrollView style={{ flex: 1, backgroundColor: '#FFF' }}>
 			<View style={style.main}>

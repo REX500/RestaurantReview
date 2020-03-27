@@ -17,7 +17,7 @@ import ModalTypes from 'components/modal/modalTypes.enum';
 // styles
 import style from './style';
 
-const RestaurantInfo = ({navigation, route}) => {
+const RestaurantInfo = ({navigation}) => {
 	const addReview = () => {
 		// set modal title and type in context
 		setModalTitle('Add a review');
@@ -29,10 +29,10 @@ const RestaurantInfo = ({navigation, route}) => {
 	const context = useContext(MyContext);
 	const setModalTitle = _get(context, 'modal.setModalTitle', () => {});
 	const setModalType = _get(context, 'modal.setModalType', () => {});
+	const resturantInfo = _get(context, 'restaurant.restaurantInfo', {});
 
-	const restaurant = _get(route, 'params.place', null);
-	const name = _get(restaurant, 'name', null);
-	const address = _get(restaurant, 'address', null);
+	const name = _get(resturantInfo, 'name', null);
+	const address = _get(resturantInfo, 'address', null);
 
 	return (
 		<View style={style.main}>
@@ -41,7 +41,7 @@ const RestaurantInfo = ({navigation, route}) => {
 				<Text style={style.headerText}>{name}</Text>
 				<View style={style.ratingContainer}>
 					<Text style={style.ratingText}>Rating:</Text>
-					<StarRating entry={restaurant} />
+					<StarRating entry={resturantInfo} />
 				</View>
 			</View>
 
@@ -67,7 +67,7 @@ const RestaurantInfo = ({navigation, route}) => {
 			</View>
 		</View>
 	);
-}
+};
 
 RestaurantInfo.propTypes = {
 	route: PropTypes.object,

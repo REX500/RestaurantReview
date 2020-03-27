@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 // navigation
@@ -12,10 +12,6 @@ import RestaurantInfo from 'components/restaurant/restaurantInfo/RestaurantInfo'
 import About from 'components/about/about';
 import Modal from 'components/modal/modal';
 import ContextWrapper from 'context/contextWrapper';
-
-// context
-import MyContext from 'context';
-import contextObject from 'context';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -40,12 +36,10 @@ const homeStackScreen = () => {
 			}}>
 			<Stack.Screen
 				name="Home"
-				options={{ headerTransparent: true, title: '' }}>
-				{(props) => <RestaurantList {...props} />}
-			</Stack.Screen>
-			<Stack.Screen name="Info">
-				{(props) => <RestaurantInfo {...props} />}
-			</Stack.Screen>
+				options={{ headerTransparent: true, title: '' }}
+				component={RestaurantList}
+			/>
+			<Stack.Screen name="Info" component={RestaurantInfo} />
 		</Stack.Navigator>
 	);
 };
@@ -72,39 +66,24 @@ const tabNavigator = () => {
 };
 
 const App = () => {
-	// context states
-	const [modalTitle, setModalTitle] = useState('');
-	const [modalType, setModalType] = useState('');
-
-	// append local state to context object
-	const value = {
-		...contextObject,
-		modal: {
-			modalTitle,
-			modalType,
-			setModalTitle,
-			setModalType
-		}
-	};
-
 	return (
 		<ContextWrapper>
-			{/* <MyContext.Provider value={value}> */}
-				<NavigationContainer theme={MyTheme} headerMode="none">
-					<Stack.Navigator mode="modal" screenOptions={{ headerTransparent: true }}>
-						<Stack.Screen
-							name="Tabs"
-							component={tabNavigator}
-							options={{ headerTransparent: true, title: '' }}
-						/>
-						<Stack.Screen
-							name="Modal"
-							options={{ headerTransparent: true, title: '', headerLeft: null }}>
-							{(props) => <Modal {...props} />}
-						</Stack.Screen>
-					</Stack.Navigator>
-				</NavigationContainer>
-			{/* </MyContext.Provider> */}
+			<NavigationContainer theme={MyTheme} headerMode="none">
+				<Stack.Navigator
+					mode="modal"
+					screenOptions={{ headerTransparent: true }}>
+					<Stack.Screen
+						name="Tabs"
+						component={tabNavigator}
+						options={{ headerTransparent: true, title: '' }}
+					/>
+					<Stack.Screen
+						name="Modal"
+						options={{ headerTransparent: true, title: '', headerLeft: null }}>
+						{(props) => <Modal {...props} />}
+					</Stack.Screen>
+				</Stack.Navigator>
+			</NavigationContainer>
 		</ContextWrapper>
 	);
 };

@@ -2,10 +2,10 @@ import React from 'react';
 
 import {Text} from 'react-native';
 
-import HeaderStyle from 'styles/HeaderStyle';
+import style from './style';
 
 const Header = () => {
-  return <Text style={HeaderStyle.header}>Restaurant review</Text>;
+  return <Text style={style.header}>Restaurant review</Text>;
 };
 
 export default Header;

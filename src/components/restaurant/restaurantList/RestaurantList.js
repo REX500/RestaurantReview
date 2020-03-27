@@ -1,7 +1,7 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { View, StyleSheet, TextInput, FlatList, Image } from 'react-native';
+import { View, TextInput, FlatList, Image } from 'react-native';
 import axios from 'axios';
 
 // components
@@ -10,6 +10,9 @@ import RestaurantRow from 'components/restaurant/restaurantRow/RestaurantRow';
 
 // images
 import PizzaImage from 'images/pizza.png';
+
+// style
+import style from './style';
 
 class RestaurantList extends Component {
 	constructor(props) {
@@ -31,8 +34,8 @@ class RestaurantList extends Component {
 		const { navigation } = this.props;
 
 		return (
-			<View style={styles.wrapper}>
-				<View style={styles.image}>
+			<View style={style.wrapper}>
+				<View style={style.image}>
 					<Image source={PizzaImage} />
 				</View>
 
@@ -40,7 +43,7 @@ class RestaurantList extends Component {
 
 				<TextInput
 					placeholder="Enter text"
-					style={styles.input}
+					style={style.input}
 					onChangeText={(text) => this.setState(() => ({ searchText: text }))}
 					value={this.state.searchText}
 				/>
@@ -63,7 +66,7 @@ class RestaurantList extends Component {
 						);
 					}}
 					keyExtractor={(item) => item.name}
-					contentContainerStyle={styles.restaurantWrapper}
+					contentContainerStyle={style.restaurantWrapper}
 				/>
 			</View>
 		);
@@ -73,26 +76,5 @@ class RestaurantList extends Component {
 RestaurantList.propTypes = {
 	navigation: PropTypes.object,
 };
-
-const styles = StyleSheet.create({
-	wrapper: { flex: 1 },
-	restaurantWrapper: {
-		padding: 20,
-	},
-	address: { color: 'grey' },
-	input: {
-		padding: 10,
-		marginHorizontal: 20,
-		fontSize: 16,
-		color: '#444',
-		borderBottomWidth: 1,
-		borderColor: '#ddd',
-		backgroundColor: '#F5F5F5',
-	},
-	image: {
-		alignItems: 'center',
-		marginTop: 40,
-	},
-});
 
 export default RestaurantList;

@@ -1,8 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+
+import style from './style';
 
 const StarRating = ({ entry }) => {
 	const { rating } = entry;
@@ -25,10 +28,8 @@ const StarRating = ({ entry }) => {
 	);
 };
 
-const style = StyleSheet.create({
-	starWrapper: {
-		flexDirection: 'row'
-	}
-});
+StarRating.propTypes = {
+	entry: PropTypes.object.isRequired
+};
 
 export default StarRating;
