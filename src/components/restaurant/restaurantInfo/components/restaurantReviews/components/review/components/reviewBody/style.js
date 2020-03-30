@@ -23,5 +23,8 @@ export default StyleSheet.create({
   },
   icon: {
     marginRight: 8
+  },
+  clickToExpandText: {
+    color: 'darkgrey'
   }
 });
