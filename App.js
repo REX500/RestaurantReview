@@ -1,5 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import Icon from 'react-native-vector-icons/FontAwesome';
+
+// redux
+import { Provider } from 'react-redux';
+import store from './src/redux/store';
 
 // navigation
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
@@ -48,6 +54,7 @@ const tabNavigator = () => {
 	return (
 		<Tab.Navigator
 			screenOptions={({ route }) => ({
+				// eslint-disable-next-line react/prop-types
 				tabBarIcon: ({ color }) => {
 					const iconName = route.name === 'List' ? 'list' : 'info-circle';
 
@@ -67,25 +74,31 @@ const tabNavigator = () => {
 
 const App = () => {
 	return (
-		<ContextWrapper>
-			<NavigationContainer theme={MyTheme} headerMode="none">
-				<Stack.Navigator
-					mode="modal"
-					screenOptions={{ headerTransparent: true }}>
-					<Stack.Screen
-						name="Tabs"
-						component={tabNavigator}
-						options={{ headerTransparent: true, title: '' }}
-					/>
-					<Stack.Screen
-						name="Modal"
-						options={{ headerTransparent: true, title: '', headerLeft: null }}>
-						{(props) => <Modal {...props} />}
-					</Stack.Screen>
-				</Stack.Navigator>
-			</NavigationContainer>
-		</ContextWrapper>
+		<Provider store={store}>
+			<ContextWrapper>
+				<NavigationContainer theme={MyTheme} headerMode="none">
+					<Stack.Navigator
+						mode="modal"
+						screenOptions={{ headerTransparent: true }}>
+						<Stack.Screen
+							name="Tabs"
+							component={tabNavigator}
+							options={{ headerTransparent: true, title: '' }}
+						/>
+						<Stack.Screen
+							name="Modal"
+							options={{ headerTransparent: true, title: '', headerLeft: null }}>
+							{(props) => <Modal {...props} />}
+						</Stack.Screen>
+					</Stack.Navigator>
+				</NavigationContainer>
+			</ContextWrapper>
+		</Provider>
 	);
+};
+
+App.propTypes = {
+	color: PropTypes.string
 };
 
 export default App;

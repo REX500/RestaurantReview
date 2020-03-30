@@ -1,12 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { connectWithStore, store } from 'appState';
+
+import { bindActionCreators } from 'redux';
+
+import { setRestaurants } from './store/actions';
+
 import { View, TextInput, FlatList, Image } from 'react-native';
-import axios from 'axios';
 
 // components
 import Header from 'components/header/Header';
 import RestaurantRow from 'components/restaurant/restaurantRow/RestaurantRow';
+
+// services
+import { getRestaurants } from './restaurantList.service';
 
 // images
 import PizzaImage from 'images/pizza.png';
@@ -19,19 +27,21 @@ class RestaurantList extends Component {
 		super(props);
 
 		this.state = {
-			searchText: null,
-			restaurants: [],
+			searchText: null
 		};
 	}
 
 	componentDidMount() {
-		axios
-			.get('http://localhost:3000/restaurants')
-			.then((result) => this.setState(() => ({ restaurants: result.data })));
+		const { setRestaurants } = this.props;
+
+		getRestaurants().then((result) => {
+			setRestaurants(result.data);
+			// this.setState(() => ({ restaurants: result.data }));
+		});
 	}
 
 	render() {
-		const { navigation } = this.props;
+		const { navigation, restaurantList } = this.props;
 
 		return (
 			<View style={style.wrapper}>
@@ -49,7 +59,7 @@ class RestaurantList extends Component {
 				/>
 
 				<FlatList
-					data={this.state.restaurants.filter(
+					data={restaurantList.filter(
 						(entry) =>
 							!this.state.searchText ||
 							entry.name
@@ -75,6 +85,24 @@ class RestaurantList extends Component {
 
 RestaurantList.propTypes = {
 	navigation: PropTypes.object,
+	setRestaurants: PropTypes.func,
+	restaurantList: PropTypes.array
 };
 
-export default RestaurantList;
+const mapStateToProps = store => {
+	return {
+		restaurantList: store.restaurantList.restaurantList
+	};
+};
+
+const mapDispatchToProps = dispatch => {
+	return bindActionCreators(
+		{
+			setRestaurants
+		},
+		dispatch
+	);
+};
+
+
+export default connectWithStore(store, RestaurantList, mapStateToProps, mapDispatchToProps);

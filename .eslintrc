@@ -9,6 +9,7 @@
     "eslint-plugin-react"
   ],
   "rules": {
+    "no-shadow": "off",
     "react/static-property-placement": "off",
     "import/order": "off",
     "react/jsx-props-no-spreading": "off",

@@ -10,6 +10,7 @@ export default StyleSheet.create({
   },
   footer: {
     marginTop: 16,
+    marginBottom: 8,
     borderTopColor: 'black',
     borderWidth: 1,
     borderStyle: 'dashed',
@@ -21,6 +22,6 @@ export default StyleSheet.create({
     alignItems: 'center'
   },
   icon: {
-    marginRight: 7
+    marginRight: 8
   }
 });

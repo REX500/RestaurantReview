@@ -5,7 +5,9 @@
     "web": "expo start --web",
     "startTest": "react-native start",
     "test": "jest",
-    "start": "expo start && cd server && node index.js"
+    "startTwo": "expo start && cd server && node index.js",
+    "debugger": "open 'rndebugger://set-debugger-loc?host=localhost&port=19001'",
+    "start": "concurrently \"expo start\" \"open 'rndebugger://set-debugger-loc?host=localhost&port=19001'\" \"cd server && node index.js\""
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.7",
@@ -13,6 +15,7 @@
     "@react-navigation/native": "^5.1.3",
     "@react-navigation/stack": "^5.2.6",
     "axios": "^0.19.2",
+    "concurrently": "^5.1.0",
     "expo": "~36.0.0",
     "lodash": "^4.17.15",
     "prop-types": "^15.7.2",
@@ -25,7 +28,11 @@
     "react-native-safe-area-context": "^0.7.3",
     "react-native-screens": "^2.4.0",
     "react-native-unimodules": "~0.7.0",
-    "react-native-web": "~0.11.7"
+    "react-native-web": "~0.11.7",
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "~7.6.0",
