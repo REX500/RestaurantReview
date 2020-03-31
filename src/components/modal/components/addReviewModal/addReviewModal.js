@@ -50,7 +50,7 @@ class AddReview extends Component {
 		const loopArray = [...Array(5)];
 
 		return loopArray.map((entry, index) => {
-			const isRated = review.rating && index <= review.rating;
+			const isRated = review.rating >= 0 && index <= review.rating;
 
 			const iconName = isRated ? 'star' : 'star-border';
 			const iconColor = isRated ? '#FFD64C' : '#EFEFEF';

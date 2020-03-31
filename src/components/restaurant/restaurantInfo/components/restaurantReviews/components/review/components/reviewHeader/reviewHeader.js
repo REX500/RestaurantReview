@@ -14,19 +14,9 @@ import style from './style';
 
 const ReviewHeader = ({name, rating, index}) => {
   let imageSource;
-  switch (index) {
-    case 0:
-      imageSource = UserOne;      
-      break;
-    case 1:
-      imageSource = UserTwo;
-      break;
-    case 2:
-      imageSource = UserThree;
-      break;
-    default:
-      break;
-  }
+  if (index % 2 === 0) imageSource = UserOne;
+  else if (index % 3 === 0) imageSource = UserTwo;
+  else imageSource = UserThree;
 
   return (
     <View style={style.main}>
