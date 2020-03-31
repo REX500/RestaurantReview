@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "nodemon index.js --config nodemon.json"
   },
   "author": "",
   "license": "ISC",
@@ -14,9 +15,12 @@
     "body-parser": "^1.19.0",
     "express": "^4.16.3",
     "fs": "^0.0.1-security",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
     "morgan": "^1.10.0",
     "node-json-db": "^1.0.3",
     "nodemon": "^2.0.2",
+    "random": "^2.2.0",
     "simple-json-db": "^1.2.2"
   }
 }

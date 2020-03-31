@@ -1,9 +1,4 @@
-
-
 const express = require('express');
-
-const { JsonDB } = require('node-json-db');
-const { Config } = require('node-json-db/dist/lib/JsonDBConfig');
 
 const morgan = require('morgan');
 
@@ -11,68 +6,45 @@ const morgan = require('morgan');
 
 const bodyParser = require('body-parser');
 
-const db = new JsonDB(new Config('myDataBase', true, false, '/'));
-
 const app = express();
+
+// routes
+const api = require('./api/routes/router');
+
+// custom error handler
+const HttpError = require('./api/lib/utils/http-error');
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
- 
+
 // parse application/json
 app.use(bodyParser.json());
 app.use(morgan('dev'));
+// app.use(cookieParser());
+// app.use(cors());
 
 const port = 3000;
-
-app.get('/restaurants', async (req, res) => {
-	let restaurants;
-
-	try {
-		restaurants = db.getData('/restaurants');
-		res.json(restaurants.restaurants);
-	} catch (error) {
-		res.json({error: 'Error occured while fetching restaurants'});
-	}
-});
 
 app.get('/images/:image', (req, res) => {
 	res.sendFile(`${__dirname}'/shapes/'${req.params.image}`);
 });
 
-app.post('/review', (req, res) => {
-	// get payload from the body
-	const data = req.body;
+// your routing starts here
+app.use('/api', api);
 
-	try {
-		// first get all restaurants
-		let restaurants = db.getData('/restaurants');
-	
-		// find restaurant
-		let restaurant = restaurants.restaurants.find(entry => entry.id === data.id);
-	
-		// add review to restaurant body
-		restaurant = {
-			...restaurant,
-			reviews: [
-				data.review,
-				...restaurant.reviews
-			]
-		};
-	
-		// append review to the restaurant object
-		restaurants = restaurants.restaurants.map(entry => {
-			if (entry.id === data.id) return restaurant;
-			return entry;
-		});
-	
-		db.push('/restaurants', {restaurants});
-
-		setTimeout(() => {
-			res.json(restaurant);
-	}, 2000);
-	} catch (error) {
-		res.json({error: 'Error occured while adding a review'});
+// handle errors we throw
+// eslint-disable-next-line consistent-return
+app.use((err, req, res) => {
+	if (err instanceof HttpError) {
+		res.status(err.httpStatus);
+		if (err.body) {
+			return res.json(err.body);
+		}
+		return res.end(err.message);
 	}
+	// eslint-disable-next-line no-console
+	console.log(err);
+	res.sendStatus(500);
 });
 
 app.listen(port, () => {

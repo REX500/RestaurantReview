@@ -31,7 +31,7 @@ class AddReview extends Component {
 			loading: false,
 		};
 
-		this.submitReview = _debounce(this.submitReview, 300, {
+		this.submitReview = _debounce(this.submitReview, 150, {
 			trailing: true,
 		}).bind(this);
 		this.editStoreEntry = this.editStoreEntry.bind(this);
