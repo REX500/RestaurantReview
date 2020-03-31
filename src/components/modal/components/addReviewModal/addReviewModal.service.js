@@ -3,7 +3,7 @@ import axios from 'axios';
 export function addReview(payload) {
 	return axios({
 		method: 'post',
-		url: 'http://localhost:3000/review',
+		url: 'http://localhost:3000/api/restaurants/review',
 		data: payload,
 	})
 		.then((res) => {

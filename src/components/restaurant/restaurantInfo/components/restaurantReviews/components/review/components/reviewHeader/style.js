@@ -21,5 +21,11 @@ export default StyleSheet.create({
     fontWeight: '300',
     textTransform: 'capitalize',
     marginRight: 8
+  },
+  menu: {
+    paddingRight: 8
+  },
+  menuDelete: {
+    color: 'red'
   }
 });

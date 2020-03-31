@@ -11,6 +11,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 // components
 import AddReviewModal from './components/addReviewModal/addReviewModal';
+import ConfirmationModal from './components/confirmationModal/confirmationModal';
 
 // utils
 import _get from 'lodash/get';
@@ -31,6 +32,8 @@ const Modal = ({ navigation }) => {
 		switch (modalType) {
 			case ModalType.ADD_REVIEW:
 				return <AddReviewModal onClose={onClose} extraData={extraData} />;
+			case ModalType.CONFIRMATION:
+				return <ConfirmationModal onConfirm={extraData.onConfirm} onCancel={extraData.onCancel} onClose={onClose} />;
 			default:
 				return (
 					<Text style={style.noComponentFound}>
@@ -42,7 +45,7 @@ const Modal = ({ navigation }) => {
 
 	const context = useContext(MyContext);
 	const modalType = _get(context, 'modal.modalType', null);
-	const modalText = _get(context, 'modal.modalTitle', null);
+	const modalTitle = _get(context, 'modal.modalTitle', null);
 	const extraData = _get(context, 'modal.extraData', null);
 
 	return (
@@ -53,7 +56,7 @@ const Modal = ({ navigation }) => {
 						<Icon name="close" style={style.icon} size={30} />
 					</TouchableOpacity>
 				</View>
-				<Text style={style.header}>{modalText || 'No text added'}</Text>
+				<Text style={style.header}>{modalTitle || 'No text added'}</Text>
 				{getChildComponent()}
 			</View>
 		</KeyboardAwareScrollView>

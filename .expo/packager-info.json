@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "packagerPort": 19001,
+  "packagerPid": 38597,
+  "expoServerNgrokUrl": "https://st-dyh.anonymous.restaurantreview.exp.direct",
+  "packagerNgrokUrl": "https://packager.st-dyh.anonymous.restaurantreview.exp.direct",
+  "ngrokPid": 38622
 }

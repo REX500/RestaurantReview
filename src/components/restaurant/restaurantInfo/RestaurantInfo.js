@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
+
+// redux
 import { store, connectWithStore } from 'appState';
-
-import MyContext from 'context';
-
 import PropTypes from 'prop-types';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+
+// context
+import MyContext from 'context'; // global
+import RestaurantInfoContext from './restaurantInfo.context'; // local - to avoid passing the navigation prop
 
 // components
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import StarRating from 'components/starRating/StarRating';
 import RestaurantReviews from './components/restaurantReviews/restaurantReviews';
 
@@ -59,6 +62,8 @@ class RestaurantInfo extends Component {
 	static contextType = MyContext;
 
 	render() {
+		const { navigation } = this.props;
+
 		// get restaurant from redux based on id passed in context
 		const restaurant = this.getRestaurant();
 		
@@ -71,44 +76,46 @@ class RestaurantInfo extends Component {
 		}
 
 		return (
-			<View style={style.main}>
-				{restaurant && (
-					<>
-						{/* restaurant name */}
-						<View style={style.header}>
-							<Text style={style.headerText}>{name}</Text>
-							<View style={style.ratingContainer}>
-								<Text style={style.ratingText}>Rating:</Text>
-								<StarRating rating={rating} />
-							</View>
-						</View>
-
-						{/* image and restaurant info (rating, address...) */}
-						<View style={style.content}>
-							{/* image wrapper */}
-							<Image style={style.image} source={RestaurantImage} />
-
-							{/* details */}
-							<View style={style.detailsWrapper}>
-								<View style={style.detailsContainer}>
-									<Text style={style.detailsTitle}>Name</Text>
-									<Text style={style.detailsContent}>{name}</Text>
+			<RestaurantInfoContext.Provider value={{navigation}}>
+				<View style={style.main}>
+					{restaurant && (
+						<>
+							{/* restaurant name */}
+							<View style={style.header}>
+								<Text style={style.headerText}>{name}</Text>
+								<View style={style.ratingContainer}>
+									<Text style={style.ratingText}>Rating:</Text>
+									<StarRating rating={rating} />
 								</View>
-								<View style={style.detailsContainer}>
-									<Text style={style.detailsTitle}>Address</Text>
-									<Text style={style.detailsContent}>{address}</Text>
-								</View>
-								<TouchableOpacity style={style.button} onPress={this.addReview}>
-									<Text style={style.buttonText}>Add review</Text>
-								</TouchableOpacity>
 							</View>
-						</View>
-						<View>
-							<RestaurantReviews restaurant={restaurant} />
-						</View>
-					</>
-				)}
-			</View>
+
+							{/* image and restaurant info (rating, address...) */}
+							<View style={style.content}>
+								{/* image wrapper */}
+								<Image style={style.image} source={RestaurantImage} />
+
+								{/* details */}
+								<View style={style.detailsWrapper}>
+									<View style={style.detailsContainer}>
+										<Text style={style.detailsTitle}>Name</Text>
+										<Text style={style.detailsContent}>{name}</Text>
+									</View>
+									<View style={style.detailsContainer}>
+										<Text style={style.detailsTitle}>Address</Text>
+										<Text style={style.detailsContent}>{address}</Text>
+									</View>
+									<TouchableOpacity style={style.button} onPress={this.addReview}>
+										<Text style={style.buttonText}>Add review</Text>
+									</TouchableOpacity>
+								</View>
+							</View>
+							<View>
+								<RestaurantReviews restaurant={restaurant} />
+							</View>
+						</>
+					)}
+				</View>
+			</RestaurantInfoContext.Provider>
 		);
 	}
 }

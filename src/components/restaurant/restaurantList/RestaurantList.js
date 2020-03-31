@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+// redux
 import { connectWithStore, store } from 'appState';
-
 import { bindActionCreators } from 'redux';
-
 import { setRestaurants } from './store/actions';
 
-import { View, TextInput, FlatList, Image } from 'react-native';
-
 // components
+import { View, TextInput, FlatList, Image } from 'react-native';
 import Header from 'components/header/Header';
 import RestaurantRow from 'components/restaurant/restaurantRow/RestaurantRow';
 
@@ -27,7 +25,7 @@ class RestaurantList extends Component {
 		super(props);
 
 		this.state = {
-			searchText: null
+			searchText: null,
 		};
 	}
 
@@ -87,23 +85,27 @@ class RestaurantList extends Component {
 RestaurantList.propTypes = {
 	navigation: PropTypes.object,
 	setRestaurants: PropTypes.func,
-	restaurantList: PropTypes.array
+	restaurantList: PropTypes.array,
 };
 
-const mapStateToProps = store => {
+const mapStateToProps = (store) => {
 	return {
-		restaurantList: store.restaurantList.restaurantList
+		restaurantList: store.restaurantList.restaurantList,
 	};
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators(
 		{
-			setRestaurants
+			setRestaurants,
 		},
 		dispatch
 	);
 };
 
-
-export default connectWithStore(store, RestaurantList, mapStateToProps, mapDispatchToProps);
+export default connectWithStore(
+	store,
+	RestaurantList,
+	mapStateToProps,
+	mapDispatchToProps
+);

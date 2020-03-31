@@ -20,6 +20,7 @@ const RestaurantRow = ({ data, index, navigation }) => {
 	};
 
 	const context = useContext(MyContext);
+
 	const setRestaurantInfo = _get(context, 'restaurant.setRestaurantInfo', () => {});
 
 	return (
@@ -50,8 +51,8 @@ const RestaurantRow = ({ data, index, navigation }) => {
 
 RestaurantRow.propTypes = {
 	data: PropTypes.object,
-	index: PropTypes.number,
 	navigation: PropTypes.object,
+	index: PropTypes.number
 };
 
 export default RestaurantRow;

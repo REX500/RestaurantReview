@@ -16,7 +16,8 @@ export default StyleSheet.create({
 
   },
   header: {
-    fontSize: 24
+    fontSize: 24,
+    textAlign: 'center'
   },
   noComponentFound: {
     padding: 8,
