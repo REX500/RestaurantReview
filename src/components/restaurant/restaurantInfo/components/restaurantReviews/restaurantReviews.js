@@ -37,6 +37,7 @@ class RestaurantReviews extends Component {
 					keyExtractor={() => _uniqueId()}
           contentContainerStyle={style.reviews}
           showsVerticalScrollIndicator={false}
+          extraData={restaurant}
 				/>
       </View>
     );

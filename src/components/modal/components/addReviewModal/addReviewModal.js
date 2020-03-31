@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { store, connectWithStore } from 'appState';
+import { bindActionCreators } from 'redux';
+
+import { updateRestaurant } from 'components/restaurant/restaurantList/store/actions';
+import { updateReview, clearReview } from './store/actions';
+import { addReview } from './addReviewModal.service';
+
 // components
 import {
 	View,
@@ -8,14 +15,12 @@ import {
 	TextInput,
 	TouchableOpacity,
 	ActivityIndicator,
-	AsyncStorage,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import style from './style';
 
 // utils
-import axios from 'axios';
 import _debounce from 'lodash/debounce';
 
 class AddReview extends Component {
@@ -23,79 +28,85 @@ class AddReview extends Component {
 		super(props);
 
 		this.state = {
-			reviewName: '',
-			reviewRating: 0,
-      reviewComment: '',
-      loading: false
-    };
-    
-    this.submitReview = _debounce(this.submitReview, 300, { trailing: true }).bind(this);
-    this.editStateEntry = this.editStateEntry.bind(this);
+			loading: false,
+		};
+
+		this.submitReview = _debounce(this.submitReview, 300, {
+			trailing: true,
+		}).bind(this);
+		this.editStoreEntry = this.editStoreEntry.bind(this);
+		this.getRatingStars = this.getRatingStars.bind(this);
+	}
+
+	componentWillUnmount() {
+		this.props.clearReview();
 	}
 
 	// creates 5 clickable stars
 	getRatingStars() {
+		const { review } = this.props;
+
 		// array with 5 undefined elements
 		const loopArray = [...Array(5)];
 
 		return loopArray.map((entry, index) => {
-			const isRated = this.state.reviewRating && index <= this.state.reviewRating;
+			const isRated = review.rating && index <= review.rating;
 
 			const iconName = isRated ? 'star' : 'star-border';
 			const iconColor = isRated ? '#FFD64C' : '#EFEFEF';
 
 			return (
-				<TouchableOpacity key={index} onPress={() => this.editStateEntry('reviewRating', index)}>
+				<TouchableOpacity
+					key={index}
+					onPress={() => this.editStoreEntry('rating', index)}>
 					<Icon name={iconName} size={44} color={iconColor} />
 				</TouchableOpacity>
 			);
 		});
-  }
-  
-  editStateEntry(name, value) {
-    const payload = {
-      [name]: value
-    };
+	}
 
-    this.setState(() => (payload));
-  }
-
-	submitReview() {
-    const {onClose} = this.props;
+	editStoreEntry(name, value) {
+		const { updateReview } = this.props;
 
 		const payload = {
-			name: this.state.reviewName ?? '',
-			rating: this.state.reviewRating ?? 0,
-			comment: this.state.reviewComment ?? '',
+			[name]: value,
 		};
 
-    this.setState(() => ({loading: true}));
+		updateReview(payload);
+	}
 
-		axios({
-			method: 'post',
-			url: 'http://localhost:3000/review',
-			data: payload,
-		})
-			.then(() => {
-				// set data in async storage
-				// AsyncStorage.setItem('reviewerName', payload.name);
-				// AsyncStorage.setItem('reviewerRating', payload.rating);
-				// AsyncStorage.setItem('reviewerComment', payload.comment);
-        this.setState(() => ({loading: false}), () => {
+	submitReview() {
+		const { onClose, review, extraData, updateRestaurant } = this.props;
+
+		const payload = {
+			// extraData in this case contains restaurant id or null
+			id: extraData,
+			review: {
+				name: review.name ?? '',
+				// add 1 to rating cause rating starts at 0 cause array.map function
+				rating: review.rating + 1 ?? 0,
+				comment: review.comment ?? '',
+			},
+		};
+
+		this.setState(() => ({ loading: true }));
+
+		addReview(payload).then(res => {
+			// update restaurant in the store
+			updateRestaurant(res.data);
+
+			this.setState(
+				() => ({ loading: false }),
+				() => {
 					onClose();
-				});
-			})
-			.catch(() => {
-        // if error occured, remove everything from storage
-				AsyncStorage.removeItem('reviewerName');
-				AsyncStorage.removeItem('reviewerRating');
-				AsyncStorage.removeItem('reviewerComment');
-        
-        this.setState(() => ({loading: false}));
-			});
+				}
+			);
+		});
 	}
 
 	render() {
+		const { review } = this.props;
+
 		return (
 			<View style={style.main}>
 				<View style={style.inputWrapper}>
@@ -103,9 +114,9 @@ class AddReview extends Component {
 					<TextInput
 						style={style.input}
 						placeholder="Enter your name"
-            value={this.state.reviewName}
-            onChangeText={text => this.editStateEntry('reviewName', text)}
-            />
+						value={review.name}
+						onChangeText={(text) => this.editStoreEntry('name', text)}
+					/>
 				</View>
 
 				<View style={style.ratingWrapper}>
@@ -118,8 +129,8 @@ class AddReview extends Component {
 					<TextInput
 						style={[style.input, { height: 150 }]}
 						placeholder="Enter review text"
-            value={this.state.reviewComment}
-            onChangeText={text => this.editStateEntry('reviewComment', text)}
+						value={review.comment}
+						onChangeText={(text) => this.editStoreEntry('comment', text)}
 						multiline
 						numberOfLines={8}
 					/>
@@ -141,6 +152,37 @@ class AddReview extends Component {
 
 AddReview.propTypes = {
 	onClose: PropTypes.func,
+	updateReview: PropTypes.func,
+	clearReview: PropTypes.func,
+	updateRestaurant: PropTypes.func,
+	review: PropTypes.object,
+	extraData: PropTypes.oneOfType([
+		PropTypes.number,
+		PropTypes.string,
+		PropTypes.object,
+	]),
 };
 
-export default AddReview;
+const mapStateToProps = (store) => {
+	return {
+		review: store.addReviewModal.review,
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return bindActionCreators(
+		{
+			updateReview,
+			clearReview,
+			updateRestaurant
+		},
+		dispatch
+	);
+};
+
+export default connectWithStore(
+	store,
+	AddReview,
+	mapStateToProps,
+	mapDispatchToProps
+);

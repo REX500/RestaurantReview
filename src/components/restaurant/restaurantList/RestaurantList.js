@@ -75,6 +75,7 @@ class RestaurantList extends Component {
 							/>
 						);
 					}}
+					extraData={restaurantList}
 					keyExtractor={(item) => item.name}
 					contentContainerStyle={style.restaurantWrapper}
 				/>

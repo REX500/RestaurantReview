@@ -10,8 +10,10 @@ const defaultContext = {
   modal: {
     modalTitle: '',
     modalType: '',
+    extraData: {},
     setModalTitle: () => {},
-    setModalType: () => {}
+    setModalType: () => {},
+    setExtraData: () => {}
   },
   restaurant: {
     restaurantInfo: null,
@@ -23,6 +25,7 @@ const ContextWrapper = ({children}) => {
     // context states
     const [modalTitle, setModalTitle] = useState(defaultContext.modal.modalTitle);
     const [modalType, setModalType] = useState(defaultContext.modal.modalType);
+    const [extraData, setExtraData] = useState(defaultContext.modal.extraData);
     const [restaurantInfo, setRestaurantInfo] = useState(defaultContext.restaurant.restaurantInfo);
 
     // append local state to context object
@@ -31,8 +34,10 @@ const ContextWrapper = ({children}) => {
       modal: {
         modalTitle,
         modalType,
+        extraData,
         setModalTitle,
-        setModalType
+        setModalType,
+        setExtraData
       },
       restaurant: {
         restaurantInfo,

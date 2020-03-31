@@ -30,7 +30,7 @@ const Modal = ({ navigation }) => {
 	const getChildComponent = () => {
 		switch (modalType) {
 			case ModalType.ADD_REVIEW:
-				return <AddReviewModal onClose={onClose} />;
+				return <AddReviewModal onClose={onClose} extraData={extraData} />;
 			default:
 				return (
 					<Text style={style.noComponentFound}>
@@ -43,6 +43,7 @@ const Modal = ({ navigation }) => {
 	const context = useContext(MyContext);
 	const modalType = _get(context, 'modal.modalType', null);
 	const modalText = _get(context, 'modal.modalTitle', null);
+	const extraData = _get(context, 'modal.extraData', null);
 
 	return (
 		<KeyboardAwareScrollView style={{ flex: 1, backgroundColor: '#FFF' }}>

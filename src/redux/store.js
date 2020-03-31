@@ -4,9 +4,11 @@ import thunk from 'redux-thunk';
 
 // different reducers
 import restaurantList from 'components/restaurant/restaurantList/store/reducer';
+import addReviewModal from 'components/modal/components/addReviewModal/store/reducer';
 
 const reducers = combineReducers({
-  restaurantList
+  restaurantList,
+  addReviewModal
 });
 
 // create and export store

@@ -54,8 +54,8 @@ app.post('/review', (req, res) => {
 		restaurant = {
 			...restaurant,
 			reviews: [
-				...restaurant.reviews,
-				data.review
+				data.review,
+				...restaurant.reviews
 			]
 		};
 	

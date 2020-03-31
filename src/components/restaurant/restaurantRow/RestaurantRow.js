@@ -14,7 +14,7 @@ import style from './style';
 const RestaurantRow = ({ data, index, navigation }) => {
 	const infoPress = () => {
 		// set restaurant info in context
-		setRestaurantInfo(data);
+		setRestaurantInfo({id: data.id});
 
 		navigation.navigate('Info');
 	};
