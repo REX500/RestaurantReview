@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import {appBlue, appGreyLight, appWhite} from 'utils/styleVars';
+
 export default StyleSheet.create({
   main: {
     flex: 1,
@@ -14,10 +16,15 @@ export default StyleSheet.create({
     fontSize: 14,
     color: 'grey'
   },
+  nameText: {
+    padding: 10,
+    marginVertical: 4,
+    fontSize: 16
+  },
   input: {
     padding: 10,
     marginVertical: 4,
-    borderColor: '#ccc',
+    borderColor: appGreyLight,
     borderWidth: 1,
     borderRadius: 3
   },
@@ -33,14 +40,14 @@ export default StyleSheet.create({
   submitButton: {
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: '#0066cc',
+    backgroundColor: appBlue,
     borderRadius: 4,
     marginVertical: 10,
     marginHorizontal: 20
   },
   submitButtonText: {
     fontSize: 18,
-    color: '#ffffff',
+    color: appWhite,
     textAlign: 'center'
   }
 });

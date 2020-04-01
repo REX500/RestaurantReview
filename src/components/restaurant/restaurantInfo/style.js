@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { appBlue, appGreyLight } from 'utils/styleVars';
 
 export default StyleSheet.create({
 	main: {
@@ -40,7 +41,7 @@ export default StyleSheet.create({
 	},
 	detailsTitle: {
 		fontWeight: '500',
-		color: 'darkgrey'
+		color: appGreyLight
 	},
 	detailsContent: {
 		fontSize: 15,
@@ -49,13 +50,13 @@ export default StyleSheet.create({
   button: {
     flexShrink: 1,
 		borderWidth: 1,
-		borderColor: '#0066CC',
+		borderColor: appBlue,
 		borderRadius: 3,
 		paddingHorizontal: 10,
 		paddingVertical: 3,
   },
   buttonText: {
-		color: '#0066CC',
+		color: appBlue,
     fontSize: 12,
     textAlign: 'center'
 	},

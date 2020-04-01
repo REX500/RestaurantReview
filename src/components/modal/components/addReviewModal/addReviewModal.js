@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 
 import { store, connectWithStore } from 'appState';
 import { bindActionCreators } from 'redux';
-
+// actions
 import { updateRestaurant } from 'components/restaurant/restaurantList/store/actions';
 import { updateReview, clearReview } from './store/actions';
-import { addReview } from './addReviewModal.service';
+
+import { addReview, editReview } from './addReviewModal.service';
 
 // components
 import {
@@ -20,8 +21,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import style from './style';
 
-// utils
+// utils/phrases
 import _debounce from 'lodash/debounce';
+import phrases from './addReviewModal.phrases';
 
 class AddReview extends Component {
 	constructor(props) {
@@ -50,15 +52,17 @@ class AddReview extends Component {
 		const loopArray = [...Array(5)];
 
 		return loopArray.map((entry, index) => {
-			const isRated = review.rating >= 0 && index <= review.rating;
+			// increase index by 1 so that it matches rating from backend
+			const increasedIndex = index + 1;
+			const isRated = review.rating > 0 && increasedIndex <= review.rating;
 
 			const iconName = isRated ? 'star' : 'star-border';
 			const iconColor = isRated ? '#FFD64C' : '#EFEFEF';
 
 			return (
 				<TouchableOpacity
-					key={index}
-					onPress={() => this.editStoreEntry('rating', index)}>
+					key={increasedIndex}
+					onPress={() => this.editStoreEntry('rating', increasedIndex)}>
 					<Icon name={iconName} size={44} color={iconColor} />
 				</TouchableOpacity>
 			);
@@ -76,22 +80,26 @@ class AddReview extends Component {
 	}
 
 	submitReview() {
-		const { onClose, review, extraData, updateRestaurant } = this.props;
+		const { onClose, review, extraData, updateRestaurant, mode } = this.props;
 
 		const payload = {
 			// extraData in this case contains restaurant id or null
 			id: extraData,
 			review: {
+				...(mode === 'edit' && {id: review.id}),
 				name: review.name ?? '',
 				// add 1 to rating cause rating starts at 0 cause array.map function
-				rating: review.rating + 1 ?? 0,
+				rating: review.rating ?? 0,
 				comment: review.comment ?? '',
 			},
 		};
 
 		this.setState(() => ({ loading: true }));
 
-		addReview(payload).then(res => {
+		const functionToSubmit =
+			mode === 'add' ? addReview(payload) : editReview(payload);
+
+		Promise.resolve(functionToSubmit).then((res) => {
 			// update restaurant in the store
 			updateRestaurant(res.data);
 
@@ -105,22 +113,27 @@ class AddReview extends Component {
 	}
 
 	render() {
-		const { review } = this.props;
+		const { review, mode } = this.props;
 
 		return (
 			<View style={style.main}>
 				<View style={style.inputWrapper}>
 					<Text style={style.inputLabel}>Your name</Text>
-					<TextInput
-						style={style.input}
-						placeholder="Enter your name"
-						value={review.name}
-						onChangeText={(text) => this.editStoreEntry('name', text)}
-					/>
+					{mode === 'edit' ?
+					(
+						<Text style={style.nameText} >{review.name}</Text>
+					) : (
+						<TextInput
+							style={style.input}
+							placeholder="Enter your name"
+							value={review.name}
+							onChangeText={(text) => this.editStoreEntry('name', text)}
+						/>
+					)}
 				</View>
 
 				<View style={style.ratingWrapper}>
-					<Text>Your rating:</Text>
+					<Text style={style.inputLabel}>Your rating:</Text>
 					<View style={style.rating}>{this.getRatingStars()}</View>
 				</View>
 
@@ -142,7 +155,9 @@ class AddReview extends Component {
 					{this.state.loading ? (
 						<ActivityIndicator size="small" color="white" />
 					) : (
-						<Text style={style.submitButtonText}>Submit Review</Text>
+						<Text style={style.submitButtonText}>
+							{mode === 'edit' ? phrases.UPDATE_REVIEW : phrases.SUBMIT_REVIEW}
+						</Text>
 					)}
 				</TouchableOpacity>
 			</View>
@@ -161,6 +176,7 @@ AddReview.propTypes = {
 		PropTypes.string,
 		PropTypes.object,
 	]),
+	mode: PropTypes.string,
 };
 
 const mapStateToProps = (store) => {
@@ -174,7 +190,7 @@ const mapDispatchToProps = (dispatch) => {
 		{
 			updateReview,
 			clearReview,
-			updateRestaurant
+			updateRestaurant,
 		},
 		dispatch
 	);

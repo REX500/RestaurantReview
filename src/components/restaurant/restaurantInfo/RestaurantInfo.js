@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import { store, connectWithStore } from 'appState';
 
 // actions
+import { updateReview } from 'components/modal/components/addReviewModal/store/actions';
 import { deleteReview } from '../restaurantList/store/actions';
 
 // context
@@ -67,7 +68,7 @@ class RestaurantInfo extends Component {
 	static contextType = MyContext;
 
 	render() {
-		const { navigation, deleteReview } = this.props;
+		const { navigation, deleteReview, updateReview } = this.props;
 
 		// get restaurant from redux based on id passed in context
 		const restaurant = this.getRestaurant();
@@ -82,7 +83,7 @@ class RestaurantInfo extends Component {
 		}
 
 		return (
-			<RestaurantInfoContext.Provider value={{ navigation, restaurantId: id, deleteReview }}>
+			<RestaurantInfoContext.Provider value={{ navigation, restaurantId: id, deleteReview, updateReview }}>
 				<View style={style.main}>
 					{restaurant && (
 						<>
@@ -135,7 +136,8 @@ class RestaurantInfo extends Component {
 RestaurantInfo.propTypes = {
 	navigation: PropTypes.object,
 	restaurantList: PropTypes.array,
-	deleteReview: PropTypes.func
+	deleteReview: PropTypes.func,
+	updateReview: PropTypes.func,
 };
 
 const mapStateToProps = (store) => {
@@ -146,7 +148,8 @@ const mapStateToProps = (store) => {
 
 const mapDispatchToProps = dispatch => {
 	return bindActionCreators({
-		deleteReview
+		deleteReview,
+		updateReview
 	},
 	dispatch);
 };

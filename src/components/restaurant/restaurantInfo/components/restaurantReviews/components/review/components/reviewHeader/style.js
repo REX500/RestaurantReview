@@ -18,19 +18,6 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  timeStamp: {
-    marginTop: 4,
-    flexDirection: 'row'
-  },
-  timeStampTitle: {
-    fontSize: 12,
-    color: '#A9A9A9',
-    fontWeight: '600'
-  },
-  timeStampDate: {
-    fontSize: 12,
-    marginLeft: 4
-  },
   name: {
     fontSize: 16,
     fontWeight: '500',

@@ -16,6 +16,7 @@ const Review = ({ review, index }) => {
 				reviewId={review.id}
 				name={review.name}
 				rating={review.rating}
+				review={review}
 				timeStamp={{ createdAt: review.createdAt, updatedAt: review.updatedAt }}
 				index={index}
 			/>

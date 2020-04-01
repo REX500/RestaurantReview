@@ -10,6 +10,7 @@ import { View, Text, Image } from 'react-native';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import StarRating from 'components/starRating/StarRating';
+import TimeStamp from './components/timeStamp/timeStamp';
 
 // services
 import { deleteReview } from './reviewHeader.service';
@@ -17,7 +18,6 @@ import { deleteReview } from './reviewHeader.service';
 // utils
 import _get from 'lodash/get';
 import ModalTypes from 'components/modal/modalTypes.enum';
-import moment from 'moment';
 
 // images
 import UserOne from 'images/user1.png';
@@ -27,7 +27,7 @@ import UserThree from 'images/user3.png';
 // styles
 import style from './style';
 
-const ReviewHeader = ({ reviewId, name, rating, index, timeStamp }) => {
+const ReviewHeader = ({ reviewId, name, rating, index, timeStamp, review }) => {
 	const setMenuRef = (ref) => {
 		menuRef = ref;
 	};
@@ -55,7 +55,33 @@ const ReviewHeader = ({ reviewId, name, rating, index, timeStamp }) => {
 			.catch(() => {});
 	};
 
+	const onUpdatePress = () => {
+		menuRef.hide();
+
+		// pop open an add review modal and throw stuff into redux
+		const setModalTitle = _get(globalContext, 'modal.setModalTitle', () => {});
+		const setModalType = _get(globalContext, 'modal.setModalType', () => {});
+		const setExtraData = _get(globalContext, 'modal.setExtraData', () => {});
+
+		setModalTitle('Update your review');
+		setModalType(ModalTypes.UPDATE_REVIEW);
+		setExtraData(restaurantId);
+
+		// set review in addReview's modal store
+		updateReview({
+			id: reviewId,
+			name,
+			comment: review.comment,
+			rating
+		});
+
+		// first navigate to confirmation modal
+		navigation.navigate('Modal');
+	};
+
 	const onDeletePress = () => {
+		menuRef.hide();
+
 		const setModalTitle = _get(globalContext, 'modal.setModalTitle', () => {});
 		const setModalType = _get(globalContext, 'modal.setModalType', () => {});
 		const setExtraData = _get(globalContext, 'modal.setExtraData', () => {});
@@ -68,26 +94,6 @@ const ReviewHeader = ({ reviewId, name, rating, index, timeStamp }) => {
 
 		// first navigate to confirmation modal
 		navigation.navigate('Modal');
-	};
-
-	const getTimeStamp = () => {
-		// get values and determine if review was edited
-		const { createdAt, updatedAt } = timeStamp;
-
-		const datesAreSame = moment
-			.utc(createdAt, 'YYYY-MM-DDTHH:mm:ss')
-			.isSame(moment.utc(updatedAt, 'YYYY-MM-DDTHH:mm:ss'), 'millisecond');
-
-		const titleText = datesAreSame ? 'Published on:' : 'Updated on:';
-
-		return (
-			<>
-				<Text style={style.timeStampTitle}>{titleText}</Text>
-				<Text style={style.timeStampDate}>
-					{moment.utc(updatedAt, 'YYYY-MM-DDTHH:mm:ss').format('MMM Do, YYYY')}
-				</Text>
-			</>
-		);
 	};
 
 	let imageSource;
@@ -103,6 +109,7 @@ const ReviewHeader = ({ reviewId, name, rating, index, timeStamp }) => {
 		navigation,
 		restaurantId,
 		deleteReview: deleteReviewFromRedux,
+		updateReview
 	} = localContext;
 
 	return (
@@ -113,7 +120,7 @@ const ReviewHeader = ({ reviewId, name, rating, index, timeStamp }) => {
 					<Text style={style.name}>{name}</Text>
 					<StarRating rating={rating} />
 				</View>
-				<View style={style.timeStamp}>{getTimeStamp()}</View>
+				<TimeStamp date={timeStamp} />
 			</View>
 			<Menu
 				ref={setMenuRef}
@@ -127,7 +134,7 @@ const ReviewHeader = ({ reviewId, name, rating, index, timeStamp }) => {
 						color="grey"
 					/>
 				}>
-				<MenuItem onPress={() => menuRef.hide()}>Update review</MenuItem>
+				<MenuItem onPress={onUpdatePress}>Update review</MenuItem>
 				<MenuDivider />
 				<MenuItem textStyle={style.menuDelete} onPress={onDeletePress}>
 					Delete Review
@@ -143,6 +150,7 @@ ReviewHeader.propTypes = {
 	index: PropTypes.number,
 	reviewId: PropTypes.number,
 	timeStamp: PropTypes.object,
+	review: PropTypes.object,
 };
 
 export default ReviewHeader;

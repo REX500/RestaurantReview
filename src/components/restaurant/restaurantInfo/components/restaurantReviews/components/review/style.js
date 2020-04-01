@@ -1,12 +1,13 @@
 import { StyleSheet } from 'react-native';
+import { appWhiteSmokey, appBlack } from 'utils/styleVars';
 
 export default StyleSheet.create({
 	main: {
 		padding: 6,
 		marginVertical: 8,
-		backgroundColor: '#f5f5f5',
+		backgroundColor: appWhiteSmokey,
 		borderRadius: 12,
-		shadowColor: '#000',
+		shadowColor: appBlack,
 		shadowOffset: {
 			width: 0,
 			height: 1,

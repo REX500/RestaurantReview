@@ -31,7 +31,9 @@ const Modal = ({ navigation }) => {
 	const getChildComponent = () => {
 		switch (modalType) {
 			case ModalType.ADD_REVIEW:
-				return <AddReviewModal onClose={onClose} extraData={extraData} />;
+				return <AddReviewModal mode="add" onClose={onClose} extraData={extraData} />;
+			case ModalType.UPDATE_REVIEW:
+				return <AddReviewModal mode="edit" onClose={onClose} extraData={extraData} />;
 			case ModalType.CONFIRMATION:
 				return <ConfirmationModal onConfirm={extraData.onConfirm} onClose={onClose} />;
 			default:
