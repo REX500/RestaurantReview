@@ -9,6 +9,7 @@ export default StyleSheet.create({
     fontWeight: 'bold'
   },
   reviews: {
-    paddingBottom: 240
+    paddingBottom: 240,
+    paddingHorizontal: 4
   }
 });
