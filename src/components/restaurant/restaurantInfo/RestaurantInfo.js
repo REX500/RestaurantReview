@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 // redux
+import { bindActionCreators } from 'redux';
 import { store, connectWithStore } from 'appState';
-import PropTypes from 'prop-types';
+
+// actions
+import { deleteReview } from '../restaurantList/store/actions';
 
 // context
 import MyContext from 'context'; // global
@@ -38,7 +42,7 @@ class RestaurantInfo extends Component {
 		const id = _get(this.context, 'restaurant.restaurantInfo.id', null);
 
 		// get restaurant from the store
-		const restaurant = restaurantList.find(entry => entry.id === id);
+		const restaurant = restaurantList.find((entry) => entry.id === id);
 
 		return restaurant;
 	}
@@ -62,21 +66,22 @@ class RestaurantInfo extends Component {
 	static contextType = MyContext;
 
 	render() {
-		const { navigation } = this.props;
+		const { navigation, deleteReview } = this.props;
 
 		// get restaurant from redux based on id passed in context
 		const restaurant = this.getRestaurant();
-		
+
 		// get restaurant info
-		let name, address, rating;
+		let id, name, address, rating;
 		if (restaurant) {
+			id = restaurant.id;
 			name = restaurant.name;
 			address = restaurant.address;
 			rating = restaurant.rating;
 		}
 
 		return (
-			<RestaurantInfoContext.Provider value={{navigation}}>
+			<RestaurantInfoContext.Provider value={{ navigation, restaurantId: id, deleteReview }}>
 				<View style={style.main}>
 					{restaurant && (
 						<>
@@ -104,7 +109,9 @@ class RestaurantInfo extends Component {
 										<Text style={style.detailsTitle}>Address</Text>
 										<Text style={style.detailsContent}>{address}</Text>
 									</View>
-									<TouchableOpacity style={style.button} onPress={this.addReview}>
+									<TouchableOpacity
+										style={style.button}
+										onPress={this.addReview}>
 										<Text style={style.buttonText}>Add review</Text>
 									</TouchableOpacity>
 								</View>
@@ -122,13 +129,21 @@ class RestaurantInfo extends Component {
 
 RestaurantInfo.propTypes = {
 	navigation: PropTypes.object,
-	restaurantList: PropTypes.array
+	restaurantList: PropTypes.array,
+	deleteReview: PropTypes.func
 };
 
-const mapStateToProps = store => {
+const mapStateToProps = (store) => {
 	return {
-		restaurantList: store.restaurantList.restaurantList
+		restaurantList: store.restaurantList.restaurantList,
 	};
 };
 
-export default connectWithStore(store, RestaurantInfo, mapStateToProps);
+const mapDispatchToProps = dispatch => {
+	return bindActionCreators({
+		deleteReview
+	},
+	dispatch);
+};
+
+export default connectWithStore(store, RestaurantInfo, mapStateToProps, mapDispatchToProps);

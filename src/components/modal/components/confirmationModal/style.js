@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   main: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     width: '100%',
     paddingHorizontal: 45,
     marginTop: 300
@@ -13,14 +12,20 @@ export default StyleSheet.create({
 		borderColor: '#0066CC',
 		borderRadius: 3,
 		paddingHorizontal: 40,
-		paddingVertical: 15,
+    paddingVertical: 15,
   },
   confirm: {
     backgroundColor: 'red',
-    color: 'white',
-    fontWeight: 'bold',
     borderColor: 'red',
     borderRadius: 3,
-    overflow: 'hidden'
+    marginLeft: 16,
+    width: 140
+  },
+  confirmText: {
+    color: 'white',
+    fontWeight: 'bold',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });

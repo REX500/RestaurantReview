@@ -13,6 +13,7 @@ const Review = ({review, index}) => {
   return (
     <View style={style.main}>
       <ReviewHeader
+        reviewId={review.id}
         name={review.name}
         rating={review.rating}
         index={index}

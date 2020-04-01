@@ -11,6 +11,9 @@ import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import StarRating from 'components/starRating/StarRating';
 
+// services
+import { deleteReview } from './reviewHeader.service';
+
 // utils
 import _get from 'lodash/get';
 import ModalTypes from 'components/modal/modalTypes.enum';
@@ -23,9 +26,32 @@ import UserThree from 'images/user3.png';
 // styles
 import style from './style';
 
-const ReviewHeader = ({ name, rating, index }) => {
+const ReviewHeader = ({ reviewId, name, rating, index }) => {
 	const setMenuRef = (ref) => {
 		menuRef = ref;
+	};
+
+	// wrapper function that first deletes review from
+	// the api and then upon success removes that review from redux
+	const onDeleteConfirm = () => {
+		const payload = {
+			id: restaurantId,
+			review: {
+				id: reviewId
+			}
+		};
+
+		return deleteReview(payload)
+			.then(res => {
+				// remove review from redux
+				deleteReviewFromRedux({
+					id: restaurantId,
+					review: {
+						id: res.id,
+					},
+				});
+			})
+			.catch(() => {});
 	};
 
 	const onDeletePress = () => {
@@ -36,13 +62,7 @@ const ReviewHeader = ({ name, rating, index }) => {
 		setModalTitle('Are you sure you want to delete a review?');
 		setModalType(ModalTypes.CONFIRMATION);
 		setExtraData({
-			onConfirm: () => {
-				console.log('confirm clicked')
-			},
-			onCancel: () => {
-				console.log('cancel clicked');
-				
-			}
+			onConfirm: onDeleteConfirm,
 		});
 
 		// first navigate to confirmation modal
@@ -58,7 +78,11 @@ const ReviewHeader = ({ name, rating, index }) => {
 	const localContext = useContext(RestaurantInfoContext);
 	const globalContext = useContext(MyContext);
 
-	const {navigation} = localContext;
+	const {
+		navigation,
+		restaurantId,
+		deleteReview: deleteReviewFromRedux,
+	} = localContext;
 
 	return (
 		<View style={style.main}>
@@ -93,6 +117,7 @@ ReviewHeader.propTypes = {
 	name: PropTypes.string,
 	rating: PropTypes.number,
 	index: PropTypes.number,
+	reviewId: PropTypes.number,
 };
 
 export default ReviewHeader;

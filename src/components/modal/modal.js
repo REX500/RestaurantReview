@@ -33,7 +33,7 @@ const Modal = ({ navigation }) => {
 			case ModalType.ADD_REVIEW:
 				return <AddReviewModal onClose={onClose} extraData={extraData} />;
 			case ModalType.CONFIRMATION:
-				return <ConfirmationModal onConfirm={extraData.onConfirm} onCancel={extraData.onCancel} onClose={onClose} />;
+				return <ConfirmationModal onConfirm={extraData.onConfirm} onClose={onClose} />;
 			default:
 				return (
 					<Text style={style.noComponentFound}>

@@ -5,9 +5,9 @@
     "web": "expo start --web",
     "startTest": "react-native start",
     "test": "jest",
-    "startTwo": "expo start && cd server && node index.js",
+    "server": "cd server && nodemon index.js",
     "debugger": "open 'rndebugger://set-debugger-loc?host=localhost&port=19001'",
-    "start": "concurrently \"expo start\" \"open 'rndebugger://set-debugger-loc?host=localhost&port=19001'\" \"cd server && node index.js\""
+    "start": "concurrently \"expo start\" \"open 'rndebugger://set-debugger-loc?host=localhost&port=19001'\""
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.7",
