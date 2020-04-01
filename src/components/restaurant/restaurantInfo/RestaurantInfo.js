@@ -19,6 +19,7 @@ import RestaurantReviews from './components/restaurantReviews/restaurantReviews'
 
 // utils
 import _get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
 import RestaurantImage from 'images/restaurant.png';
 
 // modal type
@@ -116,9 +117,13 @@ class RestaurantInfo extends Component {
 									</TouchableOpacity>
 								</View>
 							</View>
-							<View>
-								<RestaurantReviews restaurant={restaurant} />
-							</View>
+							{
+								!_isEmpty(restaurant.reviews) && (
+								<View>
+									<RestaurantReviews restaurant={restaurant} />
+								</View>
+								)
+							}
 						</>
 					)}
 				</View>

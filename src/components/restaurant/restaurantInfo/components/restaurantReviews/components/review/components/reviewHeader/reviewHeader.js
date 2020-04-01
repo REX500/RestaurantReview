@@ -17,6 +17,7 @@ import { deleteReview } from './reviewHeader.service';
 // utils
 import _get from 'lodash/get';
 import ModalTypes from 'components/modal/modalTypes.enum';
+import moment from 'moment';
 
 // images
 import UserOne from 'images/user1.png';
@@ -26,7 +27,7 @@ import UserThree from 'images/user3.png';
 // styles
 import style from './style';
 
-const ReviewHeader = ({ reviewId, name, rating, index }) => {
+const ReviewHeader = ({ reviewId, name, rating, index, timeStamp }) => {
 	const setMenuRef = (ref) => {
 		menuRef = ref;
 	};
@@ -37,12 +38,12 @@ const ReviewHeader = ({ reviewId, name, rating, index }) => {
 		const payload = {
 			id: restaurantId,
 			review: {
-				id: reviewId
-			}
+				id: reviewId,
+			},
 		};
 
 		return deleteReview(payload)
-			.then(res => {
+			.then((res) => {
 				// remove review from redux
 				deleteReviewFromRedux({
 					id: restaurantId,
@@ -69,6 +70,26 @@ const ReviewHeader = ({ reviewId, name, rating, index }) => {
 		navigation.navigate('Modal');
 	};
 
+	const getTimeStamp = () => {
+		// get values and determine if review was edited
+		const { createdAt, updatedAt } = timeStamp;
+
+		const datesAreSame = moment
+			.utc(createdAt, 'YYYY-MM-DDTHH:mm:ss')
+			.isSame(moment.utc(updatedAt, 'YYYY-MM-DDTHH:mm:ss'), 'millisecond');
+
+		const titleText = datesAreSame ? 'Published on:' : 'Updated on:';
+
+		return (
+			<>
+				<Text style={style.timeStampTitle}>{titleText}</Text>
+				<Text style={style.timeStampDate}>
+					{moment.utc(updatedAt, 'YYYY-MM-DDTHH:mm:ss').format('MMM Do, YYYY')}
+				</Text>
+			</>
+		);
+	};
+
 	let imageSource;
 	if (index % 2 === 0) imageSource = UserOne;
 	else if (index % 3 === 0) imageSource = UserTwo;
@@ -87,9 +108,12 @@ const ReviewHeader = ({ reviewId, name, rating, index }) => {
 	return (
 		<View style={style.main}>
 			<Image style={style.image} source={imageSource} />
-			<View style={style.content}>
-				<Text style={style.name}>{name}</Text>
-				<StarRating rating={rating} />
+			<View style={style.headerContent}>
+				<View style={style.content}>
+					<Text style={style.name}>{name}</Text>
+					<StarRating rating={rating} />
+				</View>
+				<View style={style.timeStamp}>{getTimeStamp()}</View>
 			</View>
 			<Menu
 				ref={setMenuRef}
@@ -118,6 +142,7 @@ ReviewHeader.propTypes = {
 	rating: PropTypes.number,
 	index: PropTypes.number,
 	reviewId: PropTypes.number,
+	timeStamp: PropTypes.object,
 };
 
 export default ReviewHeader;
