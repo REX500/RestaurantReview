@@ -12,11 +12,13 @@ import style from './style';
 const Review = ({ review, index }) => {
 	return (
 		<View style={style.main}>
-			<ReviewHeader
-				review={review}
-				index={index}
+			<ReviewHeader review={review} index={index} />
+			<ReviewBody
+				reviewId={review.id}
+				text={review.comment}
+				likes={review.like}
+				dislikes={review.dislike}
 			/>
-			<ReviewBody text={review.comment} />
 		</View>
 	);
 };

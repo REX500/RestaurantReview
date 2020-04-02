@@ -153,13 +153,7 @@ ReviewHeader.propTypes = {
 	name: PropTypes.string,
 	rating: PropTypes.number,
 	index: PropTypes.number,
-	review: PropTypes.exact({
-		id: PropTypes.number,
-		name: PropTypes.string,
-		rating: PropTypes.number,
-		createdAt: PropTypes.string,
-		updatedAt: PropTypes.string
-	}),
+	review: PropTypes.object
 };
 
 export default ReviewHeader;

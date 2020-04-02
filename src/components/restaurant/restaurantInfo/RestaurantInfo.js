@@ -7,7 +7,10 @@ import { store, connectWithStore } from 'appState';
 
 // actions
 import { updateReview } from 'components/modal/components/addReviewModal/store/actions';
-import { deleteReview } from '../restaurantList/store/actions';
+import {
+	deleteReview,
+	updateRestaurant,
+} from '../restaurantList/store/actions';
 
 // context
 import MyContext from 'context'; // global
@@ -68,7 +71,12 @@ class RestaurantInfo extends Component {
 	static contextType = MyContext;
 
 	render() {
-		const { navigation, deleteReview, updateReview } = this.props;
+		const {
+			navigation,
+			deleteReview,
+			updateReview,
+			updateRestaurant,
+		} = this.props;
 
 		// get restaurant from redux based on id passed in context
 		const restaurant = this.getRestaurant();
@@ -83,7 +91,14 @@ class RestaurantInfo extends Component {
 		}
 
 		return (
-			<RestaurantInfoContext.Provider value={{ navigation, restaurantId: id, deleteReview, updateReview }}>
+			<RestaurantInfoContext.Provider
+				value={{
+					navigation,
+					restaurantId: id,
+					deleteReview,
+					updateReview,
+					updateRestaurant,
+				}}>
 				<View style={style.main}>
 					{restaurant && (
 						<>
@@ -118,13 +133,11 @@ class RestaurantInfo extends Component {
 									</TouchableOpacity>
 								</View>
 							</View>
-							{
-								!_isEmpty(restaurant.reviews) && (
+							{!_isEmpty(restaurant.reviews) && (
 								<View>
 									<RestaurantReviews restaurant={restaurant} />
 								</View>
-								)
-							}
+							)}
 						</>
 					)}
 				</View>
@@ -138,6 +151,7 @@ RestaurantInfo.propTypes = {
 	restaurantList: PropTypes.array,
 	deleteReview: PropTypes.func,
 	updateReview: PropTypes.func,
+	updateRestaurant: PropTypes.func,
 };
 
 const mapStateToProps = (store) => {
@@ -146,12 +160,20 @@ const mapStateToProps = (store) => {
 	};
 };
 
-const mapDispatchToProps = dispatch => {
-	return bindActionCreators({
-		deleteReview,
-		updateReview
-	},
-	dispatch);
+const mapDispatchToProps = (dispatch) => {
+	return bindActionCreators(
+		{
+			deleteReview,
+			updateReview,
+			updateRestaurant,
+		},
+		dispatch
+	);
 };
 
-export default connectWithStore(store, RestaurantInfo, mapStateToProps, mapDispatchToProps);
+export default connectWithStore(
+	store,
+	RestaurantInfo,
+	mapStateToProps,
+	mapDispatchToProps
+);
