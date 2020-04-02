@@ -68,12 +68,7 @@ const ReviewHeader = ({ index, review }) => {
 		setExtraData(restaurantId);
 
 		// set review in addReview's modal store
-		updateReview({
-			id: reviewId,
-			name,
-			comment: review.comment,
-			rating
-		});
+		updateReview(review);
 
 		// first navigate to confirmation modal
 		navigation.navigate('Modal');

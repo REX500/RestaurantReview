@@ -4,9 +4,7 @@ const moment = require('moment');
 const random = require('random');
 const _ = require('lodash');
 
-/*************************************/
 /*           HELPER FUNCTIONS        */
-/*************************************/
 
 // returns all restaurants and the one based on param id
 const getRestaurant = (restaurantId) => {
@@ -47,9 +45,7 @@ const getRestaurantRating = (reviews) => {
 	return Math.round(rating * 2) / 2;
 };
 
-/*****************************************/
 /*           CONTROLLER FUNCTIONS        */
-/*****************************************/
 
 function getRestaurants() {
 	let restaurants;
@@ -140,7 +136,8 @@ function editReview(data) {
 
 		db.push('/restaurants', { restaurants });
 
-		return restaurant;
+		// return that updated review
+		return restaurant.reviews.find(entry => entry.id === data.review.id);
 	} catch (error) {
 		throw new HttpError(
 			'Bad request',
@@ -232,7 +229,7 @@ function handleLikeDislike(data) {
 		// save
 		db.push('/restaurants', { restaurants });
 
-		return restaurant;
+		return restaurant.reviews.find(entry => entry.id === data.review.id);
 	} catch (error) {
 		throw new HttpError(
 			'Bad request',

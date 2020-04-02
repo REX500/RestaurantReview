@@ -5,7 +5,7 @@ import { store, connectWithStore } from 'appState';
 import { bindActionCreators } from 'redux';
 
 // actions
-import { updateRestaurant, addReview } from 'components/restaurant/restaurantList/store/actions';
+import { updateRestaurant, addReview, updateRestaurantReview } from 'components/restaurant/restaurantList/store/actions';
 import { updateReview, clearReview } from './store/actions';
 
 import { postReview, editReview } from './addReviewModal.service';
@@ -81,7 +81,7 @@ class AddReview extends Component {
 	}
 
 	submitReview() {
-		const { onClose, review, extraData, updateRestaurant, mode } = this.props;
+		const { onClose, review, extraData, updateRestaurantReview, mode, addReview } = this.props;
 
 		const payload = {
 			// extraData in this case contains restaurant id or null
@@ -89,7 +89,6 @@ class AddReview extends Component {
 			review: {
 				...(mode === 'edit' && {id: review.id}),
 				name: review.name ?? '',
-				// add 1 to rating cause rating starts at 0 cause array.map function
 				rating: review.rating ?? 0,
 				comment: review.comment ?? '',
 			},
@@ -101,16 +100,15 @@ class AddReview extends Component {
 			mode === 'add' ? postReview(payload) : editReview(payload);
 
 		Promise.resolve(functionToSubmit).then((res) => {
+			const payload = {
+				id: extraData,
+				review: res.data
+			};
+
 			if (mode === 'add') {
-				// need to find restaurantId here
-				addReview({
-					// ! change this
-					id: 1,
-					review: res.data
-				});
+				addReview(payload);
 			} else {
-				// update restaurant in the store
-				updateRestaurant(res.data);
+				updateRestaurantReview(payload);
 			}
 
 			this.setState(
@@ -179,7 +177,6 @@ AddReview.propTypes = {
 	onClose: PropTypes.func,
 	updateReview: PropTypes.func,
 	clearReview: PropTypes.func,
-	updateRestaurant: PropTypes.func,
 	review: PropTypes.object,
 	extraData: PropTypes.oneOfType([
 		PropTypes.number,
@@ -187,6 +184,8 @@ AddReview.propTypes = {
 		PropTypes.object,
 	]),
 	mode: PropTypes.string,
+	addReview: PropTypes.func,
+	updateRestaurantReview: PropTypes.func,
 };
 
 const mapStateToProps = (store) => {
@@ -201,6 +200,8 @@ const mapDispatchToProps = (dispatch) => {
 			updateReview,
 			clearReview,
 			updateRestaurant,
+			addReview,
+			updateRestaurantReview
 		},
 		dispatch
 	);

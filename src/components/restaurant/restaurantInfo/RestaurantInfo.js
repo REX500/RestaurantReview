@@ -9,7 +9,8 @@ import { store, connectWithStore } from 'appState';
 import { updateReview } from 'components/modal/components/addReviewModal/store/actions';
 import {
 	deleteReview,
-	updateRestaurant,
+	updateRestaurantReview,
+	updateRestaurantReviewLikes
 } from '../restaurantList/store/actions';
 
 // context
@@ -75,7 +76,8 @@ class RestaurantInfo extends Component {
 			navigation,
 			deleteReview,
 			updateReview,
-			updateRestaurant,
+			updateRestaurantReview,
+			updateRestaurantReviewLikes,
 		} = this.props;
 
 		// get restaurant from redux based on id passed in context
@@ -97,7 +99,8 @@ class RestaurantInfo extends Component {
 					restaurantId: id,
 					deleteReview,
 					updateReview,
-					updateRestaurant,
+					updateRestaurantReview,
+					updateRestaurantReviewLikes
 				}}>
 				<View style={style.main}>
 					{restaurant && (
@@ -151,7 +154,8 @@ RestaurantInfo.propTypes = {
 	restaurantList: PropTypes.array,
 	deleteReview: PropTypes.func,
 	updateReview: PropTypes.func,
-	updateRestaurant: PropTypes.func,
+	updateRestaurantReview: PropTypes.func,
+	updateRestaurantReviewLikes: PropTypes.func,
 };
 
 const mapStateToProps = (store) => {
@@ -165,7 +169,8 @@ const mapDispatchToProps = (dispatch) => {
 		{
 			deleteReview,
 			updateReview,
-			updateRestaurant,
+			updateRestaurantReview,
+			updateRestaurantReviewLikes
 		},
 		dispatch
 	);

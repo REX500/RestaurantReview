@@ -1,4 +1,11 @@
-import { SET_RESTAURANTS, UPDATE_RESTAURANT, DELETE_REVIEW, ADD_REVIEW } from './actions';
+import {
+	SET_RESTAURANTS,
+	UPDATE_RESTAURANT,
+	DELETE_REVIEW,
+	ADD_REVIEW,
+	UPDATE_RESTAURANT_REVIEW,
+	UPDATE_RESTAURANT_REVIEW_LIKES
+} from './actions';
 
 const defaultState = {
 	restaurantList: [],
@@ -32,18 +39,51 @@ function reducer(state = defaultState, action) {
 		case ADD_REVIEW: {
 			return {
 				...state,
-				restaurantList: state.restaurantList.map(entry => {
+				restaurantList: state.restaurantList.map((entry) => {
+					if (entry.id === payload.id) {
+						return {
+							...entry,
+							reviews: [payload.review, ...entry.reviews],
+						};
+					}
+					return entry;
+				}),
+			};
+		}
+
+		case UPDATE_RESTAURANT_REVIEW: {
+			return {
+				...state,
+				restaurantList: state.restaurantList.map((entry) => {
 					if (entry.id === payload.id) {
 						return {
 							...entry,
 							reviews: [
 								payload.review,
-								...entry.reviews
+								...entry.reviews.filter(entry => entry.id !== payload.review.id)
 							]
 						};
 					}
 					return entry;
-				})
+				}),
+			};
+		}
+
+		case UPDATE_RESTAURANT_REVIEW_LIKES: {
+			return {
+				...state,
+				restaurantList: state.restaurantList.map((entry) => {
+					if (entry.id === payload.id) {
+						return {
+							...entry,
+							reviews: entry.reviews.map(entry => {
+								if (entry.id === payload.review.id) return payload.review;
+								return entry;
+							})
+						};
+					}
+					return entry;
+				}),
 			};
 		}
 

@@ -42,7 +42,7 @@ const ReviewBody = ({ text, likes, dislikes, reviewId }) => {
 		else setDislikeLoading(true);
 
 		const payload = {
-			id: 1,
+			id: restaurantId,
 			review: {
 				id: reviewId,
 				[action]: 1,
@@ -51,7 +51,10 @@ const ReviewBody = ({ text, likes, dislikes, reviewId }) => {
 
 		setLikeDislike(payload).then((res) => {
 			// spread the res in redux
-			updateRestaurant(res);
+			updateRestaurantReviewLikes({
+				id: restaurantId,
+				review: res
+			});
 
 			if (action === 'like') setLikeLoading(false);
 			else setDislikeLoading(false);
@@ -60,7 +63,7 @@ const ReviewBody = ({ text, likes, dislikes, reviewId }) => {
 
 	// get updateReviewcontext
 	const context = useContext(RestaurantInfoContext);
-	const { updateRestaurant } = context;
+	const { updateRestaurantReviewLikes, restaurantId } = context;
 
 	const textTooLong = text.length > 300;
 	const [textCollapsed, setTextCollapsed] = useState(true);
