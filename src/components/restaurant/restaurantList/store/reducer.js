@@ -1,4 +1,4 @@
-import { SET_RESTAURANTS, UPDATE_RESTAURANT, DELETE_REVIEW } from './actions';
+import { SET_RESTAURANTS, UPDATE_RESTAURANT, DELETE_REVIEW, ADD_REVIEW } from './actions';
 
 const defaultState = {
 	restaurantList: [],
@@ -26,6 +26,24 @@ function reducer(state = defaultState, action) {
 					}
 					return entry;
 				}),
+			};
+		}
+
+		case ADD_REVIEW: {
+			return {
+				...state,
+				restaurantList: state.restaurantList.map(entry => {
+					if (entry.id === payload.id) {
+						return {
+							...entry,
+							reviews: [
+								payload.review,
+								...entry.reviews
+							]
+						};
+					}
+					return entry;
+				})
 			};
 		}
 

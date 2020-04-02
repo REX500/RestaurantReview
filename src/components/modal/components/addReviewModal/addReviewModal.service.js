@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export function addReview(payload) {
+export function postReview(payload) {
 	return axios({
 		method: 'post',
 		url: 'http://localhost:3000/api/restaurants/review',

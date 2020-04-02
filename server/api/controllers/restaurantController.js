@@ -4,7 +4,10 @@ const moment = require('moment');
 const random = require('random');
 const _ = require('lodash');
 
+/*************************************/
 /*           HELPER FUNCTIONS        */
+/*************************************/
+
 // returns all restaurants and the one based on param id
 const getRestaurant = (restaurantId) => {
 	// first get all restaurants
@@ -44,6 +47,10 @@ const getRestaurantRating = (reviews) => {
 	return Math.round(rating * 2) / 2;
 };
 
+/*****************************************/
+/*           CONTROLLER FUNCTIONS        */
+/*****************************************/
+
 function getRestaurants() {
 	let restaurants;
 
@@ -62,23 +69,26 @@ function getRestaurants() {
 function addReview(data) {
 	try {
 		let { restaurant, restaurants } = getRestaurant(data.id);
-		
+
+		// new review object
+		const review = {
+			id: random.int(0, 100000),
+			...data.review,
+			createdAt: moment.utc().format('YYYY-MM-DDTHH:mm:ss'),
+			updatedAt: moment.utc().format('YYYY-MM-DDTHH:mm:ss'),
+		};
+
 		// add review to restaurant body, automatically add it to the start of the array
 		restaurant = {
 			...restaurant,
-			reviews: [
-				{
-					id: random.int(0, 100000),
-					...data.review,
-					createdAt: moment.utc().format('YYYY-MM-DDTHH:mm:ss'),
-					updatedAt: moment.utc().format('YYYY-MM-DDTHH:mm:ss'),
-				},
-				...restaurant.reviews,
-			]
+			reviews: [review, ...restaurant.reviews],
 		};
-		
+
 		// throw new rating in
-		restaurant = {...restaurant, rating: getRestaurantRating(restaurant.reviews)};
+		restaurant = {
+			...restaurant,
+			rating: getRestaurantRating(restaurant.reviews),
+		};
 
 		// append review to the restaurant object
 		restaurants = restaurants.restaurants.map((entry) => {
@@ -88,7 +98,7 @@ function addReview(data) {
 
 		db.push('/restaurants', { restaurants });
 
-		return restaurant;
+		return review;
 	} catch (error) {
 		throw new HttpError(
 			'Bad request',
@@ -119,7 +129,7 @@ function editReview(data) {
 		restaurant = {
 			...restaurant,
 			reviews: sortReviews(updatedReviews),
-			rating: getRestaurantRating(updatedReviews)
+			rating: getRestaurantRating(updatedReviews),
 		};
 
 		// put restaurant back into restaurants
@@ -152,7 +162,7 @@ function deleteReview(data) {
 		restaurant = {
 			...restaurant,
 			reviews: updatedReviews,
-			rating: getRestaurantRating(updatedReviews)
+			rating: getRestaurantRating(updatedReviews),
 		};
 
 		restaurants = restaurants.restaurants.map((entry) => {
@@ -206,15 +216,16 @@ function handleLikeDislike(data) {
 		});
 
 		// put updated reviews back in the restaurant
-		// and sort them based on updatedAt
 		restaurant = {
 			...restaurant,
-			reviews: sortReviews(updatedReviews),
+			reviews: updatedReviews,
 		};
 
 		// put restaurant back into restaurants
 		restaurants = restaurants.restaurants.map((entry) => {
-			if (entry.id === data.id) return restaurant;
+			if (entry.id === data.id) {
+				return restaurant;
+			}
 			return entry;
 		});
 

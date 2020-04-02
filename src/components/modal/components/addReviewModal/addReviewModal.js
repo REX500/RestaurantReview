@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 
 import { store, connectWithStore } from 'appState';
 import { bindActionCreators } from 'redux';
+
 // actions
-import { updateRestaurant } from 'components/restaurant/restaurantList/store/actions';
+import { updateRestaurant, addReview } from 'components/restaurant/restaurantList/store/actions';
 import { updateReview, clearReview } from './store/actions';
 
-import { addReview, editReview } from './addReviewModal.service';
+import { postReview, editReview } from './addReviewModal.service';
 
 // components
 import {
@@ -97,11 +98,20 @@ class AddReview extends Component {
 		this.setState(() => ({ loading: true }));
 
 		const functionToSubmit =
-			mode === 'add' ? addReview(payload) : editReview(payload);
+			mode === 'add' ? postReview(payload) : editReview(payload);
 
 		Promise.resolve(functionToSubmit).then((res) => {
-			// update restaurant in the store
-			updateRestaurant(res.data);
+			if (mode === 'add') {
+				// need to find restaurantId here
+				addReview({
+					// ! change this
+					id: 1,
+					review: res.data
+				});
+			} else {
+				// update restaurant in the store
+				updateRestaurant(res.data);
+			}
 
 			this.setState(
 				() => ({ loading: false }),
