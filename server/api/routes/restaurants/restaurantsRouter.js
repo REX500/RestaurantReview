@@ -38,10 +38,20 @@ router.patch('/review', (req, res, next) => {
   }
 });
 
-// ENDPOINT: /api/restaurant/ :DELETE
+// ENDPOINT: /api/restaurant/review :DELETE
 router.delete('/review', (req, res, next) => {
   try {
     const result = restaurantController.deleteReview(req.body);
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// ENDPOINT: /api/restaurant/review/likeDislike :POST
+router.post('/review/likeDislike', (req, res, next) => {
+  try {
+    const result = restaurantController.handleLikeDislike(req.body);
     res.json(result);
   } catch (error) {
     next(error);

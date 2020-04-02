@@ -27,7 +27,7 @@ import UserThree from 'images/user3.png';
 // styles
 import style from './style';
 
-const ReviewHeader = ({ reviewId, name, rating, index, timeStamp, review }) => {
+const ReviewHeader = ({ index, review }) => {
 	const setMenuRef = (ref) => {
 		menuRef = ref;
 	};
@@ -101,16 +101,21 @@ const ReviewHeader = ({ reviewId, name, rating, index, timeStamp, review }) => {
 	else if (index % 3 === 0) imageSource = UserTwo;
 	else imageSource = UserThree;
 
+	// menu reference
 	let menuRef = null;
+
+	// context
 	const localContext = useContext(RestaurantInfoContext);
 	const globalContext = useContext(MyContext);
-
 	const {
 		navigation,
 		restaurantId,
 		deleteReview: deleteReviewFromRedux,
 		updateReview
 	} = localContext;
+
+	// props
+	const {id: reviewId, name, rating, createdAt, updatedAt} = review;
 
 	return (
 		<View style={style.main}>
@@ -120,7 +125,7 @@ const ReviewHeader = ({ reviewId, name, rating, index, timeStamp, review }) => {
 					<Text style={style.name}>{name}</Text>
 					<StarRating rating={rating} />
 				</View>
-				<TimeStamp date={timeStamp} />
+				<TimeStamp date={{createdAt, updatedAt}} />
 			</View>
 			<Menu
 				ref={setMenuRef}
@@ -148,9 +153,13 @@ ReviewHeader.propTypes = {
 	name: PropTypes.string,
 	rating: PropTypes.number,
 	index: PropTypes.number,
-	reviewId: PropTypes.number,
-	timeStamp: PropTypes.object,
-	review: PropTypes.object,
+	review: PropTypes.exact({
+		id: PropTypes.number,
+		name: PropTypes.string,
+		rating: PropTypes.number,
+		createdAt: PropTypes.string,
+		updatedAt: PropTypes.string
+	}),
 };
 
 export default ReviewHeader;
