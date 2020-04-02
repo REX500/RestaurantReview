@@ -9,6 +9,8 @@
     "eslint-plugin-react"
   ],
   "rules": {
+    "no-else-return": "off",
+    "no-param-reassign": "off",
     "one-var": "off",
     "no-shadow": "off",
     "react/static-property-placement": "off",

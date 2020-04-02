@@ -26,10 +26,22 @@ const sortReviews = (reviews) => {
 			.isAfter(moment.utc(b.updatedAt, 'YYYY-MM-DDTHH:mm:ss'), 'millisecond');
 
 		if (isAfter) return -1;
-		// eslint-disable-next-line no-else-return
 		else if (!isAfter) return 1;
 		else return 0;
 	});
+};
+
+// gets a new updated restaurant rating
+const getRestaurantRating = (reviews) => {
+	// update restaurant ratings
+	const ratingSum = reviews.reduce((acc, currentValue) => {
+		acc += currentValue.rating;
+		return acc;
+	}, 0);
+
+	const rating = ratingSum / reviews.length;
+
+	return Math.round(rating * 2) / 2;
 };
 
 function getRestaurants() {
@@ -50,8 +62,8 @@ function getRestaurants() {
 function addReview(data) {
 	try {
 		let { restaurant, restaurants } = getRestaurant(data.id);
-
-		// add review to restaurant body
+		
+		// add review to restaurant body, automatically add it to the start of the array
 		restaurant = {
 			...restaurant,
 			reviews: [
@@ -62,8 +74,11 @@ function addReview(data) {
 					updatedAt: moment.utc().format('YYYY-MM-DDTHH:mm:ss'),
 				},
 				...restaurant.reviews,
-			],
+			]
 		};
+		
+		// throw new rating in
+		restaurant = {...restaurant, rating: getRestaurantRating(restaurant.reviews)};
 
 		// append review to the restaurant object
 		restaurants = restaurants.restaurants.map((entry) => {
@@ -104,6 +119,7 @@ function editReview(data) {
 		restaurant = {
 			...restaurant,
 			reviews: sortReviews(updatedReviews),
+			rating: getRestaurantRating(updatedReviews)
 		};
 
 		// put restaurant back into restaurants
@@ -136,6 +152,7 @@ function deleteReview(data) {
 		restaurant = {
 			...restaurant,
 			reviews: updatedReviews,
+			rating: getRestaurantRating(updatedReviews)
 		};
 
 		restaurants = restaurants.restaurants.map((entry) => {
