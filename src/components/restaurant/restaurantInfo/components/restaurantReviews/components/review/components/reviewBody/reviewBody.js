@@ -2,17 +2,24 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 // components
-import { View, Text, TouchableOpacity} from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
+// utils
+import _debounce from 'lodash/debounce';
 
 // style
 import style from './style';
 
-const ReviewBody = ({ text, likes, dislikes, setLikeDislike }) => {
+const ReviewBody = ({
+	review: { id, comment, like, dislike },
+	context,
+	setLikeDislike,
+}) => {
 	const getText = () => {
 		return textTooLong && textCollapsed
-			? `${text.substring(0, 300)} ...`
-			: text;
+			? `${comment.substring(0, 300)} ...`
+			: comment;
 	};
 
 	const getTextSection = () => {
@@ -30,9 +37,28 @@ const ReviewBody = ({ text, likes, dislikes, setLikeDislike }) => {
 		);
 	};
 
-	const textTooLong = text.length > 300;
-	const [textCollapsed, setTextCollapsed] = useState(true);
+	const setLikeDislikeWrapper = (action) => {
+		const { updateRestaurantReviewLikes, restaurantId } = context;
 
+		const payload = {
+			id: restaurantId,
+			review: {
+				id,
+				[action]: 1,
+			},
+		};
+
+		setLikeDislike(payload).then((res) => {
+			// spread the res in redux
+			updateRestaurantReviewLikes({
+				id: restaurantId,
+				review: res,
+			});
+		});
+	};
+
+	const textTooLong = comment.length > 300;
+	const [textCollapsed, setTextCollapsed] = useState(true);
 	const iconClicked = '#c2c2c2';
 
 	return (
@@ -41,7 +67,9 @@ const ReviewBody = ({ text, likes, dislikes, setLikeDislike }) => {
 			<View style={style.footer}>
 				<View style={style.iconWrapper}>
 					<TouchableOpacity
-						onPress={() => setLikeDislike('like')}>
+						onPress={_debounce(() => setLikeDislikeWrapper('like'), 300, {
+							trailing: true,
+						})}>
 						<Icon
 							style={style.icon}
 							name="thumb-up"
@@ -49,11 +77,13 @@ const ReviewBody = ({ text, likes, dislikes, setLikeDislike }) => {
 							color={iconClicked}
 						/>
 					</TouchableOpacity>
-					<Text style={style.likesDislikes}>{likes || 0}</Text>
+					<Text style={style.likesDislikes}>{like || 0}</Text>
 				</View>
 				<View style={style.iconWrapper}>
 					<TouchableOpacity
-						onPress={() => setLikeDislike('dislike')}>
+						onPress={_debounce(() => setLikeDislikeWrapper('dislike'), 300, {
+							trailing: true,
+						})}>
 						<Icon
 							style={style.icon}
 							name="thumb-down"
@@ -61,7 +91,7 @@ const ReviewBody = ({ text, likes, dislikes, setLikeDislike }) => {
 							color={iconClicked}
 						/>
 					</TouchableOpacity>
-					<Text style={style.likesDislikes}>{dislikes || 0}</Text>
+					<Text style={style.likesDislikes}>{dislike || 0}</Text>
 				</View>
 			</View>
 		</View>
@@ -69,10 +99,10 @@ const ReviewBody = ({ text, likes, dislikes, setLikeDislike }) => {
 };
 
 ReviewBody.propTypes = {
-	text: PropTypes.string,
-	likes: PropTypes.number,
-	dislikes: PropTypes.number,
-	setLikeDislike: PropTypes.func
+	comment: PropTypes.string,
+	context: PropTypes.object,
+	review: PropTypes.object,
+	setLikeDislike: PropTypes.func,
 };
 
 export default ReviewBody;

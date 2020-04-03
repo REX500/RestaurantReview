@@ -1,9 +1,5 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-
-// context
-import RestaurantInfoContext from 'components/restaurant/restaurantInfo/restaurantInfo.context'; // local
-import MyContext from 'context'; // global
 
 // components
 import { View, Text, Image } from 'react-native';
@@ -12,11 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import StarRating from 'components/starRating/StarRating';
 import TimeStamp from './components/timeStamp/timeStamp';
 
-// services
-import { deleteReview } from './reviewHeader.service';
-
 // utils
-import _get from 'lodash/get';
 import ModalTypes from 'components/modal/modalTypes.enum';
 
 // images
@@ -27,7 +19,7 @@ import UserThree from 'images/user3.png';
 // styles
 import style from './style';
 
-const ReviewHeader = ({ index, review }) => {
+const ReviewHeader = ({ index, review, context, deleteReview }) => {
 	const setMenuRef = (ref) => {
 		menuRef = ref;
 	};
@@ -38,7 +30,7 @@ const ReviewHeader = ({ index, review }) => {
 		const payload = {
 			id: restaurantId,
 			review: {
-				id: reviewId,
+				id: review.id,
 			},
 		};
 
@@ -58,11 +50,6 @@ const ReviewHeader = ({ index, review }) => {
 	const onUpdatePress = () => {
 		menuRef.hide();
 
-		// pop open an add review modal and throw stuff into redux
-		const setModalTitle = _get(globalContext, 'modal.setModalTitle', () => {});
-		const setModalType = _get(globalContext, 'modal.setModalType', () => {});
-		const setExtraData = _get(globalContext, 'modal.setExtraData', () => {});
-
 		setModalTitle('Update your review');
 		setModalType(ModalTypes.UPDATE_REVIEW);
 		setExtraData(restaurantId);
@@ -76,10 +63,6 @@ const ReviewHeader = ({ index, review }) => {
 
 	const onDeletePress = () => {
 		menuRef.hide();
-
-		const setModalTitle = _get(globalContext, 'modal.setModalTitle', () => {});
-		const setModalType = _get(globalContext, 'modal.setModalType', () => {});
-		const setExtraData = _get(globalContext, 'modal.setExtraData', () => {});
 
 		setModalTitle('Are you sure you want to delete a review?');
 		setModalType(ModalTypes.CONFIRMATION);
@@ -100,27 +83,25 @@ const ReviewHeader = ({ index, review }) => {
 	let menuRef = null;
 
 	// context
-	const localContext = useContext(RestaurantInfoContext);
-	const globalContext = useContext(MyContext);
 	const {
 		navigation,
 		restaurantId,
 		deleteReview: deleteReviewFromRedux,
-		updateReview
-	} = localContext;
-
-	// props
-	const {id: reviewId, name, rating, createdAt, updatedAt} = review;
+		updateReview,
+		modal,
+	} = context;
+	// function to manipulate modal
+	const { setModalTitle, setModalType, setExtraData } = modal;
 
 	return (
 		<View style={style.main}>
 			<Image style={style.image} source={imageSource} />
 			<View style={style.headerContent}>
 				<View style={style.content}>
-					<Text style={style.name}>{name}</Text>
-					<StarRating rating={rating} />
+					<Text style={style.name}>{review.name}</Text>
+					<StarRating rating={review.rating} />
 				</View>
-				<TimeStamp date={{createdAt, updatedAt}} />
+				<TimeStamp date={{ createdAt: review.createdAt, updatedAt: review.updatedAt }} />
 			</View>
 			<Menu
 				ref={setMenuRef}
@@ -148,7 +129,9 @@ ReviewHeader.propTypes = {
 	name: PropTypes.string,
 	rating: PropTypes.number,
 	index: PropTypes.number,
-	review: PropTypes.object
+	review: PropTypes.object,
+	context: PropTypes.object,
+	deleteReview: PropTypes.func
 };
 
 export default ReviewHeader;
