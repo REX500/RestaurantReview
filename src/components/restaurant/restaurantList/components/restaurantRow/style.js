@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import { appBlue, appWhiteSmokey } from 'utils/styleVars';
+
 export default StyleSheet.create({
   wrapper: {
 		flexDirection: 'column',
@@ -9,23 +11,14 @@ export default StyleSheet.create({
 	nameAddress: { flexDirection: 'column', flex: 8 },
 	button: {
 		borderWidth: 1,
-		borderColor: '#0066CC',
+		borderColor: appBlue,
 		borderRadius: 3,
 		paddingHorizontal: 10,
 		paddingVertical: 3,
 	},
 	buttonText: {
-		color: '#0066CC',
+		color: appBlue,
 		fontSize: 12,
-	},
-	restaurantDetails: {
-		flex: 1,
-		borderWidth: 1,
-		padding: 8,
-		marginHorizontal: 30,
-		marginVertical: 10,
-		borderColor: '#ddd',
-		borderRadius: 2,
 	},
 	imageStyle: {
 		width: 200,
@@ -34,5 +27,8 @@ export default StyleSheet.create({
 	rating: {
 		flexDirection: 'row',
 		flexBasis: 70,
+	},
+	coloredRow: {
+		backgroundColor: appWhiteSmokey
 	}
 });

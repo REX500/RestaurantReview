@@ -90,7 +90,7 @@ const ReviewHeader = ({ index, review, context, deleteReview }) => {
 		updateReview,
 		modal,
 	} = context;
-	// function to manipulate modal
+	// functions to manipulate modal
 	const { setModalTitle, setModalType, setExtraData } = modal;
 
 	return (

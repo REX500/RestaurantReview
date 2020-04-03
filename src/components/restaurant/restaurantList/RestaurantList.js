@@ -9,7 +9,7 @@ import { setRestaurants } from './store/actions';
 // components
 import { View, TextInput, FlatList, Image } from 'react-native';
 import Header from 'components/header/Header';
-import RestaurantRow from 'components/restaurant/restaurantRow/RestaurantRow';
+import RestaurantRow from './components/restaurantRow/RestaurantRow';
 
 // services
 import { getRestaurants } from './restaurantList.service';

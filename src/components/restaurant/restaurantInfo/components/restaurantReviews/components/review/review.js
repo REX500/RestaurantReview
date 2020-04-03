@@ -9,40 +9,30 @@ import ReviewBody from './components/reviewBody/reviewBody';
 // service files
 import { setLikeDislike, deleteReview } from './review.service';
 
-// local context
-import RestaurantInfoContext from 'components/restaurant/restaurantInfo/restaurantInfo.context';
-// global context
+// context
 import MyContext from 'context';
 
 import style from './style';
 
 class Review extends Component {
+	static contextType = MyContext;
+
 	render() {
 		const { index, review } = this.props;
 
 		return (
 			<View style={style.main}>
-				<RestaurantInfoContext.Consumer>
-					{localContextObject => (
-						<>
-							<MyContext.Consumer>
-								{globalContextObject => (
-									<ReviewHeader
-										review={review}
-										index={index}
-										context={{...localContextObject, ...globalContextObject}}
-										deleteReview={deleteReview}
-									/>
-								)}
-							</MyContext.Consumer>
-							<ReviewBody
-								review={review}
-								context={localContextObject}
-								setLikeDislike={setLikeDislike}
-							/>
-						</>
-					)}
-				</RestaurantInfoContext.Consumer>
+					<ReviewHeader
+						review={review}
+						index={index}
+						context={{...this.context.decoratedExtraData.restaurantInfo, ...this.context}}
+						deleteReview={deleteReview}
+					/>
+					<ReviewBody
+						review={review}
+						context={this.context.decoratedExtraData.restaurantInfo}
+						setLikeDislike={setLikeDislike}
+					/>
 			</View>
 		);
 	}

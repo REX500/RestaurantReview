@@ -10,12 +10,12 @@ import { updateReview } from 'components/modal/components/addReviewModal/store/a
 import {
 	deleteReview,
 	updateRestaurantReview,
-	updateRestaurantReviewLikes
+	updateRestaurantReviewLikes,
 } from '../restaurantList/store/actions';
 
 // context
 import MyContext from 'context'; // global
-import RestaurantInfoContext from './restaurantInfo.context'; // local - to avoid passing the navigation prop
+import ContextDecorator from 'context/contextDecorator';
 
 // components
 import { View, Text, Image, TouchableOpacity } from 'react-native';
@@ -41,6 +41,8 @@ class RestaurantInfo extends Component {
 
 		this.addReview = this.addReview.bind(this);
 	}
+
+	static contextType = MyContext;
 
 	getRestaurant() {
 		const { restaurantList } = this.props;
@@ -69,8 +71,6 @@ class RestaurantInfo extends Component {
 		navigation.navigate('Modal');
 	}
 
-	static contextType = MyContext;
-
 	render() {
 		const {
 			navigation,
@@ -93,14 +93,16 @@ class RestaurantInfo extends Component {
 		}
 
 		return (
-			<RestaurantInfoContext.Provider
+			<ContextDecorator
 				value={{
-					navigation,
-					restaurantId: id,
-					deleteReview,
-					updateReview,
-					updateRestaurantReview,
-					updateRestaurantReviewLikes
+					restaurantInfo: {
+						navigation,
+						restaurantId: id,
+						deleteReview,
+						updateReview,
+						updateRestaurantReview,
+						updateRestaurantReviewLikes,
+					}
 				}}>
 				<View style={style.main}>
 					{restaurant && (
@@ -144,7 +146,7 @@ class RestaurantInfo extends Component {
 						</>
 					)}
 				</View>
-			</RestaurantInfoContext.Provider>
+			</ContextDecorator>
 		);
 	}
 }
@@ -170,7 +172,7 @@ const mapDispatchToProps = (dispatch) => {
 			deleteReview,
 			updateReview,
 			updateRestaurantReview,
-			updateRestaurantReviewLikes
+			updateRestaurantReviewLikes,
 		},
 		dispatch
 	);
