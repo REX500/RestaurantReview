@@ -7,7 +7,7 @@ import ReviewHeader from './components/reviewHeader/reviewHeader';
 import ReviewBody from './components/reviewBody/reviewBody';
 
 // service files
-import { setLikeDislike, deleteReview } from './review.service';
+import { updateLikeDislike, deleteReview } from './review.service';
 
 // context
 import MyContext from 'context';
@@ -31,7 +31,7 @@ class Review extends Component {
 					<ReviewBody
 						review={review}
 						context={this.context.decoratedExtraData.restaurantInfo}
-						setLikeDislike={setLikeDislike}
+						updateLikeDislike={updateLikeDislike}
 					/>
 			</View>
 		);

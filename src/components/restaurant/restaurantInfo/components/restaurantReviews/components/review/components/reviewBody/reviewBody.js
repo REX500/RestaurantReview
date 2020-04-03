@@ -11,15 +11,11 @@ import _debounce from 'lodash/debounce';
 // style
 import style from './style';
 
-const ReviewBody = ({
-	review: { id, comment, like, dislike },
-	context,
-	setLikeDislike,
-}) => {
+const ReviewBody = ({ review, context, updateLikeDislike }) => {
 	const getText = () => {
 		return textTooLong && textCollapsed
-			? `${comment.substring(0, 300)} ...`
-			: comment;
+			? `${review.comment.substring(0, 300)} ...`
+			: review.comment;
 	};
 
 	const getTextSection = () => {
@@ -40,24 +36,45 @@ const ReviewBody = ({
 	const setLikeDislikeWrapper = (action) => {
 		const { updateRestaurantReviewLikes, restaurantId } = context;
 
+		// update redux before we make a call, if call fails revert to old state
+		const reviewClone = { ...review };
+
+		// update in redux
+		updateRestaurantReviewLikes({
+			id: restaurantId,
+			review: {
+				...review,
+				...(action === 'like' && { like: review.like + 1 }),
+				...(action === 'dislike' && { dislike: review.dislike + 1 }),
+			},
+		});
+
 		const payload = {
 			id: restaurantId,
 			review: {
-				id,
+				id: review.id,
 				[action]: 1,
 			},
 		};
 
-		setLikeDislike(payload).then((res) => {
-			// spread the res in redux
-			updateRestaurantReviewLikes({
-				id: restaurantId,
-				review: res,
+		updateLikeDislike(payload)
+			.then((res) => {
+				// update review again, in this case updatedAt changes
+				updateRestaurantReviewLikes({
+					id: restaurantId,
+					review: res,
+				});
+			})
+			.catch(() => {
+				// revert to old like count
+				updateRestaurantReviewLikes({
+					id: restaurantId,
+					review: reviewClone,
+				});
 			});
-		});
 	};
 
-	const textTooLong = comment.length > 300;
+	const textTooLong = review.comment.length > 300;
 	const [textCollapsed, setTextCollapsed] = useState(true);
 	const iconClicked = '#c2c2c2';
 
@@ -77,7 +94,7 @@ const ReviewBody = ({
 							color={iconClicked}
 						/>
 					</TouchableOpacity>
-					<Text style={style.likesDislikes}>{like || 0}</Text>
+					<Text style={style.likesDislikes}>{review.like || 0}</Text>
 				</View>
 				<View style={style.iconWrapper}>
 					<TouchableOpacity
@@ -91,7 +108,7 @@ const ReviewBody = ({
 							color={iconClicked}
 						/>
 					</TouchableOpacity>
-					<Text style={style.likesDislikes}>{dislike || 0}</Text>
+					<Text style={style.likesDislikes}>{review.dislike || 0}</Text>
 				</View>
 			</View>
 		</View>
@@ -102,7 +119,7 @@ ReviewBody.propTypes = {
 	comment: PropTypes.string,
 	context: PropTypes.object,
 	review: PropTypes.object,
-	setLikeDislike: PropTypes.func,
+	updateLikeDislike: PropTypes.func,
 };
 
 export default ReviewBody;
