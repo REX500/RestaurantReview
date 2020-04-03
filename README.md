@@ -1,6 +1,6 @@
 # Restaurant review app
 
-![](animation.gif)
+![](appAnimation.gif)
 
 My first react-native app built following an Egghead tutorial.
 Mind the refreshed notification on the bottom. That is due to
