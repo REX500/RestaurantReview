@@ -5,6 +5,7 @@ const appWhiteSmokey = '#f5f5f5';
 const appGrayText = '#484848';
 const appBlack = '#000';
 const appWhite = '#fff';
+const appYellow = '#FFD64C';
 
 export {
   appBlack,
@@ -13,5 +14,6 @@ export {
   appGreyDark,
   appWhiteSmokey,
   appWhite,
-  appGrayText
+  appGrayText,
+  appYellow
 };

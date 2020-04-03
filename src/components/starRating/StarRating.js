@@ -6,6 +6,7 @@ import { View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import style from './style';
+import { appWhiteSmokey, appYellow } from 'utils/styleVars';
 
 const StarRating = ({ rating }) => {
 	// round to 0.5
@@ -14,20 +15,26 @@ const StarRating = ({ rating }) => {
 
 	return (
 		<View style={style.starWrapper}>
-			{array.map((value, index) => {
-				const iconName =
-					index === array.length - 1 && !Number.isInteger(roundedEntry)
-						? 'star-half'
-						: 'star';
-
-				return <Icon key={index} name={iconName} color="#FFD64C" />;
-			})}
+			{rating ?
+				array.map((value, index) => {
+					const iconName =
+						index === array.length - 1 && !Number.isInteger(roundedEntry)
+							? 'star-half'
+							: 'star';
+	
+					return <Icon key={index} name={iconName} color={appYellow} />;
+				}
+				) : (
+					[1, 2, 3, 4, 5].map(index => {
+						return <Icon key={index} name="star" color={appWhiteSmokey} />;
+				})
+			)}
 		</View>
 	);
 };
 
 StarRating.propTypes = {
-	rating: PropTypes.number.isRequired
+	rating: PropTypes.number
 };
 
 export default StarRating;

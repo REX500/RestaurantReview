@@ -77,6 +77,9 @@ const ReviewBody = ({ review, context, updateLikeDislike }) => {
 	const [textCollapsed, setTextCollapsed] = useState(true);
 	const iconClicked = '#c2c2c2';
 
+	console.log(textCollapsed);
+	
+
 	return (
 		<View style={style.main}>
 			{getTextSection()}

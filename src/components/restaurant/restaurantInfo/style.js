@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { appBlue, appGreyLight } from 'utils/styleVars';
+import { appBlue, appGreyDark } from 'utils/styleVars';
 
 export default StyleSheet.create({
 	main: {
@@ -29,7 +29,8 @@ export default StyleSheet.create({
 	image: {
 		height: 150,
 		width: 250,
-		resizeMode: 'contain'
+		resizeMode: 'contain',
+		borderRadius: 12
 	},
 	detailsWrapper: {
 		paddingTop: 4,
@@ -41,13 +42,14 @@ export default StyleSheet.create({
 	},
 	detailsTitle: {
 		fontWeight: '500',
-		color: appGreyLight
+		color: appGreyDark
 	},
 	detailsContent: {
 		fontSize: 15,
 		fontWeight: '600'
   },
   button: {
+		marginTop: 16,
     flexShrink: 1,
 		borderWidth: 1,
 		borderColor: appBlue,
@@ -60,4 +62,12 @@ export default StyleSheet.create({
     fontSize: 12,
     textAlign: 'center'
 	},
+	noReviewWrapper: {
+		marginTop: 150,
+		alignItems: 'center'
+	},
+	noReviewText: {
+		fontSize: 18,
+		color: appGreyDark
+	}
 });

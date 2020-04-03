@@ -112,7 +112,7 @@ class RestaurantInfo extends Component {
 								<Text style={style.headerText}>{name}</Text>
 								<View style={style.ratingContainer}>
 									<Text style={style.ratingText}>Rating:</Text>
-									<StarRating rating={rating} />
+										<StarRating rating={rating} />
 								</View>
 							</View>
 
@@ -138,9 +138,13 @@ class RestaurantInfo extends Component {
 									</TouchableOpacity>
 								</View>
 							</View>
-							{!_isEmpty(restaurant.reviews) && (
+							{!_isEmpty(restaurant.reviews) ? (
 								<View>
 									<RestaurantReviews restaurant={restaurant} />
+								</View>
+							) : (
+								<View style={style.noReviewWrapper}>
+									<Text style={style.noReviewText}>No reviews yet...</Text>
 								</View>
 							)}
 						</>

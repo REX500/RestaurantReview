@@ -1,8 +1,12 @@
-# Restaurant review dummy app
+# Restaurant review app
 
 ![](animation.gif)
 
-My first react-native app (how cute) built following an Egghead tutorial.
+My first react-native app built following an Egghead tutorial.
+Mind the refreshed notification on the bottom. That is due to
+using a .json database to write all the changes to. Since the
+.json file is in the same structure as the rest of the code
+any time I do a CRUD on it, Watchman renders a refresh.
 
 ## Getting Started/ Installing
 
