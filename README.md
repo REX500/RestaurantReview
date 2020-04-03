@@ -1,5 +1,7 @@
 # Restaurant review dummy app
 
+![](animation.gif)
+
 My first react-native app (how cute) built following an Egghead tutorial.
 
 ## Getting Started/ Installing

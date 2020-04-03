@@ -59,7 +59,6 @@ const ReviewBody = ({ review, context, updateLikeDislike }) => {
 
 		updateLikeDislike(payload)
 			.then((res) => {
-				// update review again, in this case updatedAt changes
 				updateRestaurantReviewLikes({
 					id: restaurantId,
 					review: res,
