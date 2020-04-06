@@ -35,10 +35,6 @@ Make sure you have these to make the app run:
 * run *yarn server* which will run a nodemon instance of the node api server
 * in another terminal run *expo start* which will run expo client - after the thing loads press `i` to open it in simulator in MacOS
 
-## Testing
-
-No tests for now.
-
 ## Debugging
 
 If you're feeling adventurous or want to copy this project and build on it, you would probably be happy to find that I exported all http requests that my api currently supports. Open `Postman` and import the *postman_collection.json* file and viola!
