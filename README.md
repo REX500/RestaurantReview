@@ -22,26 +22,30 @@ Then navigate to `/server` folder and again:
 yarn or npm install
 ```
 
-This is because we have a dummy, simple and small node server in here too to aid with fetching list of restaurants and simulate adding a review.
-If I'm feeling productive ill hook it up with MongoDb and actually enable you to add reviews... (Not for now as it's not the goal of learning RN)
+This is because we have a dummy, simple and small node server in here too to aid with fetching list of restaurants and simulate adding/editinga and updating a review.
 
-### Prerequisites
+## Prerequisites
 
 Make sure you have these to make the app run:
 * Have latest Node version installed: https://nodejs.org/en/
 * Install expo cli from here: https://docs.expo.io/versions/latest/workflow/expo-cli/
-* Install VS Code cause it's the best (for JS)
 
-### Testing
+## Running the project
+
+* run *yarn server* which will run a nodemon instance of the node api server
+* in another terminal run *expo start* which will run expo client - after the thing loads press `i` to open it in simulator in MacOS
+
+## Testing
 
 No tests for now.
 
+## Debugging
+
+If you're feeling adventurous or want to copy this project and build on it, you would probably be happy to find that I exported all http requests that my api currently supports. Open `Postman` and import the *postman_collection.json* file and viola!
+
 ## Deployment
 
-This project cannot be deployed on App Store/ Google Play for the followin reasons:
-* main goal was to learn how react-native works - architecture, functions... This didn't include learning how to deploy
-* I couldn't start the project with `react-native run-ios` after I added any type of navigation module - `react-native-navigation` or `react-navigation`. Both of these required me to run *pod install* which broke my project completely and threw a ton of Xcode related problems. I followed tutorials step by step with 0 luck. For that reason I decided to finish the project in Expo just so I can learn `react-native` and not worry about third party problems caused most likely by new versions or react-native, navigation modules, ios and/or xcode.
-* if you feel like that last paragraph was a bit sarcastic and passive-aggressive that's because it was - I spent over 8 hours trying to debug these errors with 0 luck
+Main goal was to learn how react-native works - architecture, functions... This didn't include learning how to deploy. Furthermore, I couldn't start the project with `react-native run-ios` after I added any type of navigation module - `react-native-navigation` or `react-navigation`. Both of these required me to run *pod install* which broke my project completely and threw a ton of Xcode related problems. I followed tutorials step by step with 0 luck. For that reason I decided to finish the project in Expo just so I can learn `react-native` and not worry about third party problems caused most likely by new versions or react-native, navigation modules, ios and/or xcode.
 
 ## Built With
 

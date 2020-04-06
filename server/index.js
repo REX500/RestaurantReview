@@ -2,8 +2,6 @@ const express = require('express');
 
 const morgan = require('morgan');
 
-// const fs = require('fs');
-
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -14,14 +12,15 @@ const api = require('./api/routes/router');
 // custom error handler
 const HttpError = require('./api/lib/utils/http-error');
 
+// custom logger
+const { info, log, error } = require('./api/lib/utils/log');
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
 app.use(bodyParser.json());
 app.use(morgan('dev'));
-// app.use(cookieParser());
-// app.use(cors());
 
 const port = 3000;
 
@@ -42,20 +41,11 @@ app.use((err, req, res) => {
 		}
 		return res.end(err.message);
 	}
-	// eslint-disable-next-line no-console
-	console.log(err);
+	error(err);
 	res.sendStatus(500);
 });
 
 app.listen(port, () => {
-	// add restaurants to db so we can work with them
-	// let data = fs.readFileSync('db/database.json', 'utf8');
-	// // make sure data is in json format
-	// data = JSON.parse(data);
-
-	// // push to db
-	// db.push('/restaurants', data);
-
-	// eslint-disable-next-line no-console
-	console.info(`Restaurant app listening on port ${port}!`);
+	info(`Restaurant app listening on port ${port}!`);
+	log(`To use the api set start with http://localhost:${port}/api/restaurants :GET`);
 });

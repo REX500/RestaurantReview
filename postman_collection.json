@@ -1,0 +1,147 @@
+{
+	"info": {
+		"_postman_id": "104b5baa-c51f-4b54-bac8-790e94377abe",
+		"name": "React Native api collection",
+		"description": "Just to make my own life easier when building a super cool but very basic react native api.\nApi handles things like:\n- adding a review for a restaurant\n- updating a review\n- deleting a review\n- liking/disliking a review\n- maybe auth (if I'm not too lazy to implement it)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get restaurants",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/restaurants",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"restaurants"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a review",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 12,\n\t\"review\": {\n\t\t\"id\": 1,\n\t\t\"comment\": \"Shit's updated again!\"\n\t}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/restaurants/review",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"restaurants",
+						"review"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a review",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 16,\n\t\"review\": {\n\t\t \"id\": \"1\"\n\t}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/restaurants/review",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"restaurants",
+						"review"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add a review",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 1,\n\t\"review\": {\n\t\t\"name\": \"Billy Kenny\",\n\t\t\"rating\": 5,\n\t\t\"comment\": \"I just came for the music.\"\n\t}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/restaurants/review",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"restaurants",
+						"review"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Like/dislike a review",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 1,\n\t\"review\": {\n\t\t\"id\": 91669,\n\t\t\"like\": 10\n\t}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/restaurants/review/likeDislike",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"restaurants",
+						"review",
+						"likeDislike"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
