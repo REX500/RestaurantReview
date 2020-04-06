@@ -126,8 +126,6 @@ const ReviewHeader = ({ index, review, context, deleteReview }) => {
 };
 
 ReviewHeader.propTypes = {
-	name: PropTypes.string,
-	rating: PropTypes.number,
 	index: PropTypes.number,
 	review: PropTypes.object,
 	context: PropTypes.object,
